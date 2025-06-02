@@ -10,7 +10,7 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
-        <title>KapeTann Brewed Coffee Shop</title>
+        <title>Nai Tsa</title>
 
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous"></script>
@@ -29,7 +29,7 @@
         <!-- HEADER SECTION -->
         <header class="header">
             <a href="#" class="logo">
-                <img src="../assets/images/logo.png" class="img-logo" alt="KapeTann Logo">
+                <img src="../assets/images/logo.png" class="img-logo" alt="Nai Tsa Logo">
             </a>
 
             <!-- MAIN MENU FOR SMALLER DEVICES -->
@@ -89,7 +89,7 @@
         <!-- HERO SECTION -->
         <section class="home" id="home">
             <div class="content">
-                <h3>Welcome to KapeTann Coffee Shop, <?php echo $_SESSION['username']; ?>!</h3>
+                <h3>Welcome to Nai Tsa Bubble Tea & Food Hub, <?php echo $_SESSION['username']; ?>!</h3>
                 <p>
                     <strong>We are open 4:00 PM to 9:00 PM.</strong>
                 </p>
@@ -105,21 +105,12 @@
                     <img src="../assets/images/about-img.png" alt="" class="img-fluid">
                 </div>
                 <div class="content">
-                    <h3>Welcome to KapeTann!</h3>
+                    <h3>Welcome to Nai Tsa!</h3>
                     <p>
-                        At KapeTann Coffee Shop, we are passionate about coffee and believe
-                        that every cup tells a story. We are a cozy coffee shop located
-                        in the heart of the city, dedicated to providing an exceptional
-                        coffee experience to our customers. Our love for coffee has led
-                        us on a voyage of exploration and discovery, as we travel the
-                        world in search of the finest coffee beans, carefully roasted
-                        and brewed to perfection.
+                        At Nai Tsa, we’re passionate about blending fun, flavor, and creativity into every sip and bite. Located in the heart of the city, we’re a vibrant hub dedicated to serving delicious bubble tea, refreshing drinks, and mouthwatering food that brings people together. Our journey began with a love for bold flavors and innovative recipes, inspiring us to craft unique drinks with the freshest ingredients, chewy boba pearls, and endless customization.
                     </p>
                     <p>
-                        But coffee is not just a drink, it's an experience. Our warm and
-                        inviting atmosphere at KapeTann is designed to be a haven
-                        for coffee lovers, where they can relax, connect, and embark
-                        on their own coffee voyages.
+                        But Nai Tsa is more than just a drink or a meal, it’s an experience. Our lively and welcoming space is designed to be a go-to spot for friends, families, and bubble tea enthusiasts to unwind, share laughs, and explore a world of flavors. Whether you’re craving a classic milk tea, a fruity explosion, or a savory snack, every visit is a chance to taste happiness in every bubble!
                     </p>
                     <a href="#" class="btn btn-dark text-decoration-none">Learn More</a>
                 </div>
