@@ -84,7 +84,7 @@
         <!-- HERO SECTION -->
         <section class="home" id="home">
             <div class="content">
-                <h3>Welcome to KapeTann Coffee Shop, mga kap!</h3>
+                <h3>Welcome to Nai Tsa Bubble Tea & Food Hub,</h3>
                 <p>
                     <strong>We are open 4:00 PM to 9:00 PM.</strong>
                 </p>
@@ -100,21 +100,12 @@
                     <img src="assets/images/about-img.png" alt="" class="img-fluid">
                 </div>
                 <div class="content">
-                    <h3>Welcome to KapeTann!</h3>
+                    <h3>Welcome to Nai Tsa!</h3>
                     <p>
-                        At KapeTann Coffee Shop, we are passionate about coffee and believe
-                        that every cup tells a story. We are a cozy coffee shop located
-                        in the heart of the city, dedicated to providing an exceptional
-                        coffee experience to our customers. Our love for coffee has led
-                        us on a voyage of exploration and discovery, as we travel the
-                        world in search of the finest coffee beans, carefully roasted
-                        and brewed to perfection.
+                        At Nai Tsa, we’re passionate about blending fun, flavor, and creativity into every sip and bite. Located in the heart of the city, we’re a vibrant hub dedicated to serving delicious bubble tea, refreshing drinks, and mouthwatering food that brings people together. Our journey began with a love for bold flavors and innovative recipes, inspiring us to craft unique drinks with the freshest ingredients, chewy boba pearls, and endless customization.
                     </p>
                     <p>
-                        But coffee is not just a drink, it's an experience. Our warm and
-                        inviting atmosphere at KapeTann is designed to be a haven
-                        for coffee lovers, where they can relax, connect, and embark
-                        on their own coffee voyages.
+                        But Nai Tsa is more than just a drink or a meal, it’s an experience. Our lively and welcoming space is designed to be a go-to spot for friends, families, and bubble tea enthusiasts to unwind, share laughs, and explore a world of flavors. Whether you’re craving a classic milk tea, a fruity explosion, or a savory snack, every visit is a chance to taste happiness in every bubble!
                     </p>
                     <a href="#" class="btn btn-dark text-decoration-none">Learn More</a>
                 </div>
