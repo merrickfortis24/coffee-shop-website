@@ -34,7 +34,7 @@
             aria-expanded="true" aria-controls="collapseTwo">
             <i class="fas fa-fw fa-cog"></i>
             <span>Components</span>
-            <span class="float-right"><i class="fas fa-angle-down"></i></span>
+            <span class="float-right"><i class="fas fa-angle-down rotate"></i></span>
         </a>
         <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
@@ -51,7 +51,7 @@
             aria-expanded="true" aria-controls="collapseUtilities">
             <i class="fas fa-fw fa-wrench"></i>
             <span>Utilities</span>
-            <span class="float-right"><i class="fas fa-angle-down"></i></span>
+            <span class="float-right"><i class="fas fa-angle-down rotate"></i></span>
         </a>
         <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities"
             data-parent="#accordionSidebar">
@@ -79,7 +79,7 @@
             aria-expanded="true" aria-controls="collapsePages">
             <i class="fas fa-fw fa-folder"></i>
             <span>Pages</span>
-            <span class="float-right"><i class="fas fa-angle-down"></i></span>
+            <span class="float-right"><i class="fas fa-angle-down rotate"></i></span>
         </a>
         <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
@@ -128,3 +128,16 @@
 
 </ul>
 <!-- End of Sidebar -->
+
+
+<style>
+.rotate {
+    transition: transform .2s;
+}
+.nav-link.collapsed .rotate {
+    transform: rotate(0deg);
+}
+.nav-link:not(.collapsed) .rotate {
+    transform: rotate(-180deg);
+}
+</style>
