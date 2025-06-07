@@ -51,6 +51,11 @@
                         <li class="nav-item">
                             <a href="users/login.php" class="text-decoration-none">Login</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="register.php">
+                                <i class="fas fa-user-shield"></i> Admin Profile
+                            </a>
+                        </li>
                     </ul>
                 </div>
             </nav>
