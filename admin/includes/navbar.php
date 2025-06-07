@@ -1,4 +1,4 @@
-        <!-- Sidebar -->
+<!-- Sidebar -->
         <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
             <!-- Sidebar - Brand -->
@@ -16,7 +16,8 @@
             <li class="nav-item active">
                 <a class="nav-link" href="index.html">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
-                    <span>Dashboard</span></a>
+                    <span>Dashboard</span>
+                </a>
             </li>
 
             <!-- Divider -->
@@ -41,6 +42,16 @@
                         <a class="collapse-item" href="cards.html">Cards</a>
                     </div>
                 </div>
+            </li>
+
+     
+     
+            <!-- Nav Item - Admin Profile (always visible) -->
+            <li class="nav-item">
+                <a class="nav-link" href="register.php">
+                    <i class="fas fa-user-shield"></i>
+                    <span>Admin Profile</span>
+                </a>
             </li>
 
             <!-- Nav Item - Utilities Collapse Menu -->
@@ -105,6 +116,8 @@
                     <span>Tables</span></a>
             </li>
 
+
+
             <!-- Divider -->
             <hr class="sidebar-divider d-none d-md-block">
 
@@ -139,7 +152,7 @@
                         <span aria-hidden="true">×</span>
                     </button>
                 </div>
-                <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
+                <div class="modal-body">Select
                 <div class="modal-footer">
                     <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
                     <a class="btn btn-primary" href="login.html">Logout</a>
