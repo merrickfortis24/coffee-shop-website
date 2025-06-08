@@ -1,9 +1,12 @@
 <?php
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
 session_start();
+
 include('includes/header.php');
 include('includes/navbar.php');
+?>
+
+
+<?php
 $connection = mysqli_connect("localhost", "root", "", "coffee_shop");
 if (!$connection) {
     die("Database connection failed: " . mysqli_connect_error());
