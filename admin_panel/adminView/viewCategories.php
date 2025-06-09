@@ -30,27 +30,37 @@
   </table>
 
   <!-- Trigger the modal with a button -->
-  <button type="button" class="btn btn-secondary" style="height:40px" data-toggle="modal" data-target="#categoryModal">
+  <button type="button" class="btn btn-secondary" style="height:40px" data-toggle="modal" data-target="#myModal">
     Add Category
   </button>
 
-  <!-- Add Category Modal -->
-  <div class="modal fade" id="categoryModal" tabindex="-1" role="dialog">
+  <!-- Modal -->
+  <div class="modal fade" id="myModal" role="dialog">
     <div class="modal-dialog">
+    
+      <!-- Modal content-->
       <div class="modal-content">
         <div class="modal-header">
-          <h4 class="modal-title">Add Category</h4>
+          <h4 class="modal-title">New Category Item</h4>
           <button type="button" class="close" data-dismiss="modal">&times;</button>
         </div>
         <div class="modal-body">
-          <input type="text" id="category_name" class="form-control" placeholder="Category Name">
+          <form  enctype='multipart/form-data' action="./controller/addCatController.php" method="POST">
+            <div class="form-group">
+              <label for="c_name">Category Name:</label>
+              <input type="text" class="form-control" name="c_name" id="category_name" required>
+            </div>
+            <div class="form-group">
+              <button type="button" id="upload" class="btn btn-secondary" name="upload" style="height:40px" onclick="addCategory()">Add Category</button>
+            </div>
+          </form>
+
         </div>
         <div class="modal-footer">
-          <!-- Place your button here -->
-          <button type="button" id="addCategoryBtn" class="btn btn-primary" onclick="addCategory()">Add Category</button>
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-default" data-dismiss="modal" style="height:40px">Close</button>
         </div>
       </div>
+      
     </div>
   </div>
 

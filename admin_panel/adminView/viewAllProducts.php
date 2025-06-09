@@ -4,6 +4,7 @@
     <thead>
       <tr>
         <th class="text-center">S.N.</th>
+        <th class="text-center">Product Image</th>
         <th class="text-center">Product Name</th>
         <th class="text-center">Product Description</th>
         <th class="text-center">Category Name</th>
@@ -17,6 +18,7 @@
                 p.Product_ID, 
                 p.Product_name, 
                 p.Product_desc, 
+                p.Product_image, 
                 c.Category_NAME, 
                 p.Price
               FROM product p
@@ -28,6 +30,13 @@
     ?>
     <tr>
       <td><?= $count ?></td>
+      <td>
+        <?php if (!empty($row["Product_image"])): ?>
+          <img height='100px' src='<?= htmlspecialchars($row["Product_image"]) ?>'>
+        <?php else: ?>
+          <span>No Image</span>
+        <?php endif; ?>
+      </td>
       <td><?= htmlspecialchars($row["Product_name"]) ?></td>
       <td><?= htmlspecialchars($row["Product_desc"]) ?></td>
       <td><?= htmlspecialchars($row["Category_NAME"]) ?></td>
@@ -78,14 +87,12 @@
             <div class="form-group">
               <label for="category">Category:</label>
               <select id="category" name="category" required>
-                                <option disabled selected>Select category</option>
-
+                <option disabled selected>Select category</option>
                 <?php
-                  include_once "../config/dbconnect.php";
                   $sql="SELECT * from category";
-                  $result = $conn->query($sql);
-                  if ($result->num_rows > 0){
-                    while($row = $result->fetch_assoc()){
+                  $result = $conn-> query($sql);
+                  if ($result-> num_rows > 0){
+                    while($row = $result-> fetch_assoc()){
                       echo "<option value='".$row['Category_ID']."'>".$row['Category_NAME']."</option>";
                     }
                   }

@@ -319,3 +319,8 @@
   color: #ECDAC9;
   text-decoration: none;
 }
+
+.allContent-section {
+    max-height: 90vh;
+    overflow-y: auto;
+}

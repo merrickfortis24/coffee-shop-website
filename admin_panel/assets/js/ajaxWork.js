@@ -118,6 +118,27 @@ function addItems(){
     });
 }
 
+function addCategory(){
+    var category_name = $('#category_name').val();
+    var fd = new FormData();
+    fd.append('c_name', category_name); // match PHP expects 'c_name'
+    fd.append('upload', '1');
+    $.ajax({
+        url:"./controller/addCatController.php", // <-- corrected path
+        method:"post",
+        data:fd,
+        processData: false,
+        contentType: false,
+        success: function(data){
+            alert(data);
+            $('form').trigger('reset');
+            $('#myModal').modal('hide');
+            $('.modal-backdrop').remove();
+            showCategory();
+        }
+    });
+}
+
 //edit product data
 function itemEditForm(id){
     $.ajax({
@@ -355,23 +376,3 @@ function addToWish(id){
     });
 }
 
-function addCategory(){
-    var category_name = $('#category_name').val();
-    var fd = new FormData();
-    fd.append('category_name', category_name);
-    fd.append('upload', '1');
-    $.ajax({
-        url:"./controller/addCategoryController.php",
-        method:"post",
-        data:fd,
-        processData: false,
-        contentType: false,
-        success: function(data){
-            alert(data);
-            $('form').trigger('reset');
-            $('#categoryModal').modal('hide'); // Use your modal's ID
-            $('.modal-backdrop').remove();
-            showCategory();
-        }
-    });
-}

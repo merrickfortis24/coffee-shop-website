@@ -122,113 +122,7 @@
             <h1 class="heading">Our <span>Menu</span></h1>
             <div class="box-container">
                 <div class="container">
-                    <div class="row">
-                        <div class="col-md-4">
-                            <div class="box">
-                                <img src="../assets/images/cart-item-1.png" alt="" class="product-img">
-                                <h3 class="product-title">Americano - Hot Espresso (12 OZ)</h3>
-                                <div class="price">₱45.00</div>
-                                <a class="btn add-cart">Add to Cart</a>
-                            </div>
-                        </div><br />
-                        <div class="col-md-4">
-                            <div class="box">
-                                <img src="../assets/images/cart-item-2.png" alt="" class="product-img">
-                                <h3 class="product-title">Colombian Supremo Cup (12 OZ)</h3>
-                                <div class="price">₱40.00</div>
-                                <a class="btn add-cart">Add to Cart</a>
-                            </div>
-                        </div><br />
-                        <div class="col-md-4">
-                            <div class="box">
-                                <img src="../assets/images/cart-item-3.png" alt="" class="product-img">
-                                <h3 class="product-title">Nitro Cold Brew w/ Straw (12 OZ)</h3>
-                                <div class="price">₱50.00</div>
-                                <a class="btn add-cart">Add to Cart</a>
-                            </div>
-                        </div>
-                    </div><br />
-                    <div class="row">
-                        <div class="col-md-4">
-                            <div class="box">
-                                <img src="../assets/images/cart-item-4.png" alt="" class="product-img">
-                                <h3 class="product-title">Seasonal Single-Origin (12 OZ)</h3>
-                                <div class="price">₱30.00</div>
-                                <a class="btn add-cart">Add to Cart</a>
-                            </div>
-                        </div><br />
-                        <div class="col-md-4">
-                            <div class="box">
-                                <img src="../assets/images/cart-item-5.png" alt="" class="product-img">
-                                <h3 class="product-title">Indonesian Sumatra Mandheling (12 OZ)</h3>
-                                <div class="price">₱40.00</div>
-                                <a class="btn add-cart">Add to Cart</a>
-                            </div>
-                        </div><br />
-                        <div class="col-md-4">
-                            <div class="box">
-                                <img src="../assets/images/cart-item-6.png" alt="" class="product-img">
-                                <h3 class="product-title">Mint Mojito Iced Coffee (12 OZ)</h3>
-                                <div class="price">₱55.00</div>
-                                <a class="btn add-cart">Add to Cart</a>
-                            </div>
-                        </div>
-                    </div><br />
-                    <div class="row row-to-hide">
-                        <div class="col-md-4">
-                            <div class="box">
-                                <img src="../assets/images/cart-item-7.png" alt="" class="product-img">
-                                <h3 class="product-title">Iced Americano (12 OZ)</h3>
-                                <div class="price">₱35.00</div>
-                                <a class="btn add-cart">Add to Cart</a>
-                            </div>
-                        </div><br />
-                        <div class="col-md-4">
-                            <div class="box">
-                                <img src="../assets/images/cart-item-8.png" alt="" class="product-img">
-                                <h3 class="product-title">Specialty Brews (12 OZ)</h3>
-                                <div class="price">₱85.00</div>
-                                <a class="btn add-cart">Add to Cart</a>
-                            </div>
-                        </div><br />
-                        <div class="col-md-4">
-                            <div class="box">
-                                <img src="../assets/images/cart-item-9.png" alt="" class="product-img">
-                                <h3 class="product-title">Seasonal Origin (12 OZ)</h3>
-                                <div class="price">₱80.00</div>
-                                <a class="btn add-cart">Add to Cart</a>
-                            </div>
-                        </div>
-                    </div><br />
-                    <div class="row row-to-hide">
-                        <div class="col-md-4">
-                            <div class="box">
-                                <img src="../assets/images/cart-item-10.png" alt="" class="product-img">
-                                <h3 class="product-title">Ethiopian Yirgacheffe Cup (12 OZ)</h3>
-                                <div class="price">₱55.00</div>
-                                <a class="btn add-cart">Add to Cart</a>
-                            </div>
-                        </div><br />
-                        <div class="col-md-4">
-                            <div class="box">
-                                <img src="../assets/images/cart-item-11.png" alt="" class="product-img">
-                                <h3 class="product-title">Cold Brew Tonic In a Cup (12 OZ)</h3>
-                                <div class="price">₱35.00</div>
-                                <a class="btn add-cart">Add to Cart</a>
-                            </div>
-                        </div><br />
-                        <div class="col-md-4">
-                            <div class="box">
-                                <img src="../assets/images/cart-item-12.png" alt="" class="product-img">
-                                <h3 class="product-title">Caramel Cold Foam Cold Brew (12 OZ)</h3>
-                                <div class="price">₱55.00</div>
-                                <a class="btn add-cart">Add to Cart</a>
-                            </div>
-                        </div>
-                    </div><br />
-                    <center>
-                        <button id="showHideBtn" class="btn btn-dark">SHOW MORE</button>
-                    </center> 
+                    <div class="row" id="product-list"></div>
                 </div>
             </div>
         </section>
@@ -579,56 +473,165 @@
         <script src="../assets/js/responses.js"></script>
         <script src="../assets/js/convo.js"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
         <script>
-            // CODE FOR THE FORMSPREE
-            window.onbeforeunload = () => {
-                for(const form of document.getElementsByTagName('form')) {
-                    form.reset();
+            let cart = []; // Place this at the top, outside of $(document).ready()
+
+            $(document).ready(function() {
+                // CODE FOR THE FORMSPREE
+                window.onbeforeunload = () => {
+                    for(const form of document.getElementsByTagName('form')) {
+                        form.reset();
+                    }
                 }
-            }
 
-            // CODE FOR THE GOOGLE MAPS API
-            function initMap() {
-                var map = new google.maps.Map(document.getElementById('map'), {
-                    center: {lat: 14.99367271992383, lng: 120.17629231186626},
-                    zoom: 9
+                // CODE FOR THE GOOGLE MAPS API
+                function initMap() {
+                    var map = new google.maps.Map(document.getElementById('map'), {
+                        center: {lat: 14.99367271992383, lng: 120.17629231186626},
+                        zoom: 9
+                    });
+
+                    var marker = new google.maps.Marker({
+                        position: {lat: 14.99367271992383, lng: 120.17629231186626},
+                        map: map,
+                        title: 'Your Location'
+                    });
+                }
+
+                // CODE FOR THE SHOW MORE & SHOW LESS BUTTON IN MENU
+                $(document).ready(function() {
+                    $(".row-to-hide").hide();
+                    $("#showHideBtn").text("SHOW MORE");
+                    $("#showHideBtn").click(function() {
+                        $(".row-to-hide").toggle();
+                        if ($(".row-to-hide").is(":visible")) {
+                            $(this).text("SHOW LESS");
+                        } else {
+                            $(this).text("SHOW MORE");
+                        }
+                    });
                 });
 
-                var marker = new google.maps.Marker({
-                    position: {lat: 14.99367271992383, lng: 120.17629231186626},
-                    map: map,
-                    title: 'Your Location'
+                // CODE FOR THE SHOW MORE & SHOW LESS BUTTON IN GALLERY
+                $(document).ready(function() {
+                    $(".pic-to-hide").hide();
+                    $("#showBtn").text("SHOW MORE");
+                    $("#showBtn").click(function() {
+                        $(".pic-to-hide").toggle();
+                        if ($(".pic-to-hide").is(":visible")) {
+                            $(this).text("SHOW LESS");
+                        } else {
+                            $(this).text("SHOW MORE");
+                        }
+                    });
                 });
-            }
 
-            // CODE FOR THE SHOW MORE & SHOW LESS BUTTON IN MENU
-            $(document).ready(function() {
-                $(".row-to-hide").hide();
-                $("#showHideBtn").text("SHOW MORE");
-                $("#showHideBtn").click(function() {
-                    $(".row-to-hide").toggle();
-                    if ($(".row-to-hide").is(":visible")) {
-                        $(this).text("SHOW LESS");
+                function renderProducts(products) {
+                    let html = '';
+                    products.forEach(function(product, idx) {
+                        let imagePath = '../admin_panel' + product.product_image.substring(1);
+                        html += `
+                            <div class="col-md-4">
+                                <div class="box">
+                                    <img src="${imagePath}" alt="" class="product-img">
+                                    <h3 class="product-title">${product.Product_name}</h3>
+                                    <div class="price">₱${product.Price}</div>
+                                    <a class="btn add-cart" data-idx="${idx}">Add to Cart</a>
+                                </div>
+                            </div>
+                        `;
+                    });
+                    $('#product-list').html(html);
+
+                    // Attach click handler after rendering
+                    $('.add-cart').click(function() {
+                        const idx = $(this).data('idx');
+                        addToCart(products[idx]);
+                    });
+                }
+
+                function addToCart(product) {
+                    // Check if already in cart
+                    let found = cart.find(item => item.Product_ID === product.Product_ID);
+                    if (found) {
+                        found.qty += 1;
                     } else {
-                        $(this).text("SHOW MORE");
+                        cart.push({...product, qty: 1});
                     }
-                });
-            });
+                    renderCart();
+                }
 
-            // CODE FOR THE SHOW MORE & SHOW LESS BUTTON IN GALLERY
-            $(document).ready(function() {
-                $(".pic-to-hide").hide();
-                $("#showBtn").text("SHOW MORE");
-                $("#showBtn").click(function() {
-                    $(".pic-to-hide").toggle();
-                    if ($(".pic-to-hide").is(":visible")) {
-                        $(this).text("SHOW LESS");
-                    } else {
-                        $(this).text("SHOW MORE");
-                    }
-                });
+                function renderCart() {
+                    let html = '';
+                    let subtotal = 0;
+                    cart.forEach(function(item, idx) {
+                        let imagePath = item.product_image
+                            ? ('../admin_panel' + item.product_image.substring(1))
+                            : '../assets/images/cart-item-1.png';
+                        let itemTotal = item.Price * item.qty;
+                        subtotal += itemTotal;
+                        html += `
+        <div class="cart-item d-flex align-items-center mb-3 pb-2 border-bottom">
+            <img src="${imagePath}" class="cart-img-thumb me-3" style="width:64px;height:64px;object-fit:cover;border-radius:8px;">
+            <div class="flex-grow-1">
+                <div class="cart-product-title fw-bold" style="font-size:1.1rem;">${item.Product_name}</div>
+                <div class="text-muted" style="font-size:1rem;">₱${Number(item.Price).toFixed(2)}</div>
+                <div class="d-flex align-items-center mt-2" style="max-width:120px;">
+                    <button class="cart-minus" style="width:32px;height:32px;background:var(--main-color);color:#fff;border-radius:5px;border:none;font-size:1.5rem;display:flex;align-items:center;justify-content:center;" data-idx="${idx}">−</button>
+                    <input type="text" class="cart-qty-input mx-1" value="${item.qty}" style="width:48px;height:32px;text-align:center;font-size:1.2rem;border:1px solid var(--main-color);border-radius:5px;" data-idx="${idx}" readonly>
+                    <button class="cart-plus" style="width:32px;height:32px;background:var(--main-color);color:#fff;border-radius:5px;border:none;font-size:1.5rem;display:flex;align-items:center;justify-content:center;" data-idx="${idx}">+</button>
+                </div>
+            </div>
+            <button class="cart-remove" data-idx="${idx}" title="Remove" style="background:none;border:none;padding:0;margin-left:10px;display:flex;align-items:center;justify-content:center;color:var(--main-color);font-size:2rem;">
+                <i class="fa fa-trash"></i>
+            </button>
+        </div>
+    `;
+                    });
+                    html += `
+        <hr>
+        <div class="d-flex justify-content-between align-items-center fw-bold fs-5 mb-3">
+            <span>Total:</span>
+            <span class="total-price">₱${subtotal.toFixed(2)}</span>
+        </div>
+    `;
+                    $('.cart-content').html(html);
+
+                    // Plus button
+                    $('.cart-plus').click(function() {
+                        const idx = $(this).data('idx');
+                        cart[idx].qty += 1;
+                        renderCart();
+                    });
+                    // Minus button
+                    $('.cart-minus').click(function() {
+                        const idx = $(this).data('idx');
+                        if (cart[idx].qty > 1) {
+                            cart[idx].qty -= 1;
+                        } else {
+                            cart.splice(idx, 1);
+                        }
+                        renderCart();
+                    });
+                    // Remove button
+                    $('.cart-remove').click(function() {
+                        const idx = $(this).data('idx');
+                        cart.splice(idx, 1);
+                        renderCart();
+                    });
+                }
+
+                function loadProducts() {
+                    $.getJSON('../ajax/get_products.php', function(products) {
+                        renderProducts(products);
+                    });
+                }
+
+                loadProducts();
+                setInterval(loadProducts, 5000); // Auto-refresh
             });
-        </script> 
+        </script>
     </body>
 </html>
