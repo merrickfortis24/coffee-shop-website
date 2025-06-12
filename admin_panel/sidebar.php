@@ -14,6 +14,7 @@
     <a href="#productsizes"   onclick="showProductSizes()" ><i class="fa fa-th-list"></i> Product Sizes</a>    
     <a href="#products"   onclick="showProductItems()" ><i class="fa fa-th"></i> Products</a>
     <a href="#orders" onclick="showOrders()"><i class="fa fa-list"></i> Orders</a>
+    <a href="#admins" onclick="showAdmins()"><i class="fa fa-user"></i> Admins</a>
   
   <!---->
 </div>

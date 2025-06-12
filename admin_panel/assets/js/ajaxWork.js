@@ -60,28 +60,36 @@ function showOrders(){
         }
     });
 }
+function showAdmins(){
+    $.ajax({
+        url: "./adminView/viewAdmin.php",
+        method: "post",
+        data: {record:1},
+        success: function(data){
+            $('.allContent-section').html(data);
+        }
+    });
+}
 
-function ChangeOrderStatus(id){
+function ChangeOrderStatus(orders_id){
     $.ajax({
        url:"./controller/updateOrderStatus.php",
        method:"post",
-       data:{record:id},
+       data:{record: orders_id},
        success:function(data){
            alert('Order Status updated successfully');
-           $('form').trigger('reset');
            showOrders();
        }
    });
 }
 
-function ChangePay(id){
+function ChangePay(orders_id){
     $.ajax({
        url:"./controller/updatePayStatus.php",
        method:"post",
-       data:{record:id},
+       data:{record: orders_id},
        success:function(data){
            alert('Payment Status updated successfully');
-           $('form').trigger('reset');
            showOrders();
        }
    });
@@ -161,11 +169,12 @@ function updateItems(){
     var existingImage = $('#existingImage').val();
     var newImage = $('#newImage')[0].files[0];
     var fd = new FormData();
-    fd.append('product_id', product_id);
-    fd.append('p_name', p_name);
-    fd.append('p_desc', p_desc);
-    fd.append('p_price', p_price);
-    fd.append('category', category);
+    fd.append('Product_ID', product_id);
+fd.append('Product_name', p_name);
+fd.append('Product_desc', p_desc);
+fd.append('Price', p_price);
+fd.append('Category_ID', category);
+
     fd.append('existingImage', existingImage);
     fd.append('newImage', newImage);
    
@@ -375,4 +384,96 @@ function addToWish(id){
         }
     });
 }
+
+function addAdmin() {
+    var fd = new FormData();
+    fd.append('admin_name', $('#admin_name').val());
+    fd.append('admin_email', $('#admin_email').val());
+    fd.append('admin_password', $('#admin_password').val());
+    fd.append('admin_role', $('#admin_role').val());
+    fd.append('admin_status', $('#admin_status').val());
+    fd.append('register_admin', '1');
+    $.ajax({
+        url: './controller/addAdminController.php',
+        method: 'POST',
+        data: fd,
+        processData: false,
+        contentType: false,
+        success: function(response) {
+            alert(response);
+            $('#addAdminForm')[0].reset();
+            $('#addAdminModal').modal('hide');
+            $('.modal-backdrop').remove();
+            showAdmins();
+        }
+    });
+}
+
+function editAdmin(id) {
+    $.ajax({
+        url: './adminView/editAdminForm.php',
+        method: 'POST',
+        data: { record: id },
+        success: function(data) {
+            $('body').append(data); // Append modal to body
+        }
+    });
+}
+
+function adminDelete(id) {
+    if(confirm("Are you sure you want to delete this admin?")) {
+        $.ajax({
+            url: './controller/deleteAdminController.php',
+            method: 'POST',
+            data: { record: id },
+            success: function(response) {
+                alert(response);
+                showAdmins();
+            }
+        });
+    }
+}
+
+function updateAdmin() {
+    var fd = new FormData();
+    fd.append('admin_id', $('#edit_admin_id').val());
+    fd.append('admin_name', $('#edit_admin_name').val());
+    fd.append('admin_email', $('#edit_admin_email').val());
+    fd.append('admin_role', $('#edit_admin_role').val());
+    fd.append('admin_status', $('#edit_admin_status').val());
+    fd.append('update_admin', '1');
+    $.ajax({
+        url: './controller/updateAdminController.php',
+        method: 'POST',
+        data: fd,
+        processData: false,
+        contentType: false,
+        success: function(response) {
+            alert(response);
+            $('#editAdminModal').modal('hide');
+            $('.modal-backdrop').remove();
+            showAdmins();
+        }
+    });
+}
+
+function logout() {
+    if (confirm('Are you sure you want to logout?')) {
+        $.ajax({
+            url: './logout.php',
+            method: 'POST',
+            success: function() {
+                window.location.href = './login.php';
+            },
+            error: function() {
+                // Fallback if AJAX fails
+                window.location.href = './logout.php';
+            }
+        });
+    }
+    return false; // Prevent default action
+}
+
+
+
 

@@ -61,7 +61,10 @@
             </nav>
             <div class="icons">
                 <div class="fas fa-search" id="search-btn"></div>
-                <div class="fas fa-shopping-cart" id="cart-btn"></div>
+                <div class="fas fa-shopping-cart position-relative" id="cart-btn">
+                    <span id="cart-badge" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="display:none; font-size:0.8rem;">0</span>
+                </div>
+                <div class="fas fa-user" id="profile-btn"></div>
                 <div class="fas fa-bars" id="menu-btn"></div>
             </div>
 
@@ -621,6 +624,7 @@
                         cart.splice(idx, 1);
                         renderCart();
                     });
+                    updateCartBadge();
                 }
 
                 function loadProducts() {

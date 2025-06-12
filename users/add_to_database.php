@@ -10,7 +10,7 @@
     $sql1 = "SELECT * FROM users WHERE username = '$user'";
     $result = $con->query($sql1);
     while($row = $result->fetch_assoc()) {
-        $id = $row['id'];
+        $orders_id = $row['orders_id'];
     }
 
     // Insert order details into database
@@ -21,7 +21,7 @@
         $quantity = $order['quantity'];
         $subtotalAmount = $order['subtotal_amount'];
         $invoiceNumber = $order['invoice_number'];
-        $sql = "INSERT INTO orders (price, title, quantity, subtotal_amount, date, invoice_number, user_id) VALUES ('$price', '$title', '$quantity', '$subtotalAmount', '$date', '$invoiceNumber', '$id')";
+        $sql = "INSERT INTO orders (price, title, quantity, subtotal_amount, date, invoice_number, user_id) VALUES ('$price', '$title', '$quantity', '$subtotalAmount', '$date', '$invoiceNumber', '$orders_id')";
         if ($con->query($sql) !== TRUE) {
             echo "Error: " . $sql . "<br>" . $con->error;
         }

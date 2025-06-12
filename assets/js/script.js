@@ -112,6 +112,7 @@ function buyButtonClicked() {
         cartContent.removeChild(cartContent.firstChild);
     }
     updateTotal();
+    updateCartBadge(); // <-- Add this line
 }
 
 // Function to generate invoice number
@@ -125,6 +126,7 @@ function removeCartItem(event) {
     var buttonClicked = event.target;
     buttonClicked.parentElement.remove();
     updateTotal();
+    updateCartBadge(); // <-- Add this line
 }
 
 // Function for "When quantity changes"
@@ -134,6 +136,7 @@ function quantityChanged(event) {
         input.value = 1;
     }
     updateTotal();
+    updateCartBadge(); // <-- Add this line
 }
 
 //Add to Cart
@@ -176,6 +179,7 @@ function addProductToCart(title, price, productImg) {
         .getElementsByClassName("cart-quantity")[0]
         .addEventListener('change', quantityChanged);
 
+    updateCartBadge();
 }
 
 // Update Total
@@ -194,4 +198,17 @@ function updateTotal() {
         total = Math.round(total * 100) / 100;
         
         document.getElementsByClassName("total-price")[0].innerText = "₱" + total;
+}
+
+// Update Cart Badge
+function updateCartBadge() {
+    let totalQty = 0;
+    cart.forEach(item => {
+        totalQty += item.qty;
+    });
+    const badge = document.getElementById('cart-badge');
+    if (badge) {
+        badge.textContent = totalQty;
+        badge.style.display = totalQty > 0 ? 'inline-block' : 'none';
+    }
 }

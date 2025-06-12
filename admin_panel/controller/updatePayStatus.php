@@ -1,29 +1,13 @@
 <?php
 
     include_once "../config/dbconnect.php";
-    $order_id=$_POST['record'];
-    //echo $order_id;
-    $sql = "SELECT pay_status from orders where order_id='$order_id'"; 
-    $result=$conn-> query($sql);
-  //  echo $result;
+    $order_id = $_POST['record'];
+    // Toggle pay_status (0->1, 1->0)
+    $sql = "UPDATE orders SET pay_status = IF(pay_status=0,1,0) WHERE orders_id='$order_id'";
+    if(mysqli_query($conn, $sql)){
+        echo "Payment status updated!";
+    } else {
+        echo "Failed to update payment status.";
+    }
 
-    $row=$result-> fetch_assoc();
-    
-   // echo $row["pay_status"];
-    
-    if($row["pay_status"]==0){
-         $update = mysqli_query($conn,"UPDATE orders SET pay_status=1 where order_id='$order_id'");
-    }
-    else if($row["pay_status"]==1){
-         $update = mysqli_query($conn,"UPDATE orders SET pay_status=0 where order_id='$order_id'");
-    }
-        
- 
-    // if($update){
-    //     echo"success";
-    // }
-    // else{
-    //     echo"error";
-    // }
-    
 ?>
