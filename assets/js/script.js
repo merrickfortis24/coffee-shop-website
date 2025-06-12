@@ -76,44 +76,49 @@ function ready() {
 
 // Function for "Buy Button Works"
 function buyButtonClicked() {
-    alert('Your order is placed! Thank you for buying and enjoy your coffee!');
-    var cartContent = document.getElementsByClassName("cart-content")[0];
-    var cartBoxes = cartContent.getElementsByClassName("cart-box");
-    var orderDetails = [];
-
-    // Generate invoice number
-    var invoiceNumber = generateInvoiceNumber();
-
-    // Loop through all cart boxes to get details
-    for (var i = 0; i < cartBoxes.length; i++) {
-        var cartBox = cartBoxes[i];
-        var title = cartBox.getElementsByClassName("cart-product-title")[0].innerText;
-        var price = cartBox.getElementsByClassName("cart-price")[0].innerText;
-        var quantity = cartBox.getElementsByClassName("cart-quantity")[0].value;
-        var priceValue = parseFloat(price.replace('₱', '').replace(',', ''));
-        var subtotalAmount = priceValue * quantity;
-        orderDetails.push({ title: title, price: priceValue, quantity: quantity, subtotal_amount: subtotalAmount, invoice_number: invoiceNumber });    
+    if (cart.length === 0) {
+        alert('Your cart is empty!');
+        return;
     }
 
-    //Send data to server using AJAX
-    var xhr = new XMLHttpRequest();
-    xhr.open("POST", "add_to_database.php", true);
-    xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-    xhr.onreadystatechange = function() {
-        if (xhr.readyState === 4 && xhr.status === 200) {
-            console.log(xhr.responseText);
-        }
-    };
-    xhr.send(JSON.stringify(orderDetails));
-    cartItem.classList.remove('active');
+    const payMethod = document.querySelector('input[name="pay_method"]:checked').value;
+    const invoiceNumber = generateInvoiceNumber();
+    const orderDetails = [];
 
-    // Clear cart after sending data to server
-    while (cartContent.hasChildNodes()) {
-        cartContent.removeChild(cartContent.firstChild);
-    }
-    updateTotal();
-    updateCartBadge(); // <-- Add this line
+    cart.forEach(item => {
+        orderDetails.push({
+            title: item.Product_name,
+            price: item.Price,
+            quantity: item.qty,
+            subtotal_amount: (item.Price * item.qty),
+            invoice_number: invoiceNumber,
+            pay_method: payMethod // This should be a string like "GCash"
+        });
+    });
+
+    // Send to server
+    fetch('add_to_database.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(orderDetails)
+    })
+    .then(response => response.text())
+    .then(data => {
+        alert('Order placed successfully!');
+        cart = [];
+        renderCart();
+        document.querySelector('.cart').classList.remove('active');
+    })
+    .catch(err => {
+        console.error('Error:', err);
+        alert('Error placing order');
+    });
 }
+
+// Example: Checkout button click handler
+document.querySelector('.btn-buy').addEventListener('click', function() {
+    // ...duplicate logic...
+});
 
 // Function to generate invoice number
 function generateInvoiceNumber() {
@@ -146,8 +151,15 @@ function addCartClicked(event) {
     var title = shopProducts.getElementsByClassName("product-title")[0].innerText;
     var price = shopProducts.getElementsByClassName("price")[0].innerText;
     var productImg = shopProducts.getElementsByClassName("product-img")[0].src;
-    addProductToCart(title, price, productImg);
-    updateTotal();
+
+    // Check if already in cart
+    let found = cart.find(item => item.title === title);
+    if (found) {
+        found.qty += 1;
+    } else {
+        cart.push({ title: title, price: price, productImg: productImg, qty: 1 });
+    }
+    renderCart();
 }
 
 function addProductToCart(title, price, productImg) {
@@ -212,3 +224,15 @@ function updateCartBadge() {
         badge.style.display = totalQty > 0 ? 'inline-block' : 'none';
     }
 }
+
+function renderCart() {
+    var cartContent = document.getElementsByClassName("cart-content")[0];
+    cartContent.innerHTML = '';
+    cart.forEach(item => {
+        // ...create and append cart item elements as before...
+    });
+    updateTotal();
+    updateCartBadge(); // <-- Make sure this is called here
+}
+
+let cart = [];

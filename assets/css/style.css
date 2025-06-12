@@ -766,6 +766,33 @@ section {
     padding: 0.25rem 0.75rem;
 }
 
+/* Add this to your CSS for proper cart badge positioning */
+#cart-btn {
+    position: relative;
+    display: inline-block;
+}
+
+.icon-cart {
+    position: relative;
+    display: inline-block;
+}
+#cart-badge {
+    position: absolute;
+    background-color: red;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    color: #fff;
+    top: -8px;
+    right: -12px;
+    font-size: 1.2rem;
+    z-index: 2;
+    display: none; /* Hide by default */
+}
+
 /* MEDIA QUERIES */
 @media (max-width:991px){
     html { 

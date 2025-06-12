@@ -84,6 +84,22 @@
                     <div class="total-title">Total: </div>
                     <div class="total-price">₱0</div>
                 </div>
+                <!-- Add id to payment method container -->
+<div class="mb-3" id="payment-methods">
+    <label class="fw-bold mb-2">Payment Method:</label><br>
+    <div class="form-check form-check-inline">
+        <input class="form-check-input" type="radio" name="pay_method" id="cod" value="Cash on Delivery" checked>
+        <label class="form-check-label" for="cod">Cash on Delivery</label>
+    </div>
+    <div class="form-check form-check-inline">
+        <input class="form-check-input" type="radio" name="pay_method" id="gcash" value="GCash">
+        <label class="form-check-label" for="gcash">GCash</label>
+    </div>
+    <div class="form-check form-check-inline">
+        <input class="form-check-input" type="radio" name="pay_method" id="cc" value="Credit Card">
+        <label class="form-check-label" for="cc">Credit Card</label>
+    </div>
+</div>
                 <!-- BUY BUTTON -->
                 <button type="button" class="btn-buy">Checkout Now</button>
             </div>
@@ -479,8 +495,83 @@
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
         <script>
-            let cart = []; // Place this at the top, outside of $(document).ready()
+            // Global cart array
+let cart = [];
 
+// Add to cart function
+function addToCart(product) {
+    const existing = cart.find(item => item.Product_ID === product.Product_ID);
+    if (existing) {
+        existing.qty++;
+    } else {
+        cart.push({
+            ...product,
+            qty: 1
+        });
+    }
+    renderCart();
+}
+
+// Render cart function
+function renderCart() {
+    const cartContent = document.querySelector(".cart-content");
+    let html = '';
+    let total = 0;
+
+    cart.forEach((item, idx) => {
+        const itemTotal = item.Price * item.qty;
+        total += itemTotal;
+
+        html += `
+        <div class="cart-box" data-idx="${idx}">
+            <img src="${item.product_image ? ('../admin_panel' + item.product_image.substring(1)) : '../assets/images/cart-item-1.png'}" alt="" class="cart-img">
+            <div class="detail-box">
+                <div class="cart-product-title">${item.Product_name}</div>
+                <div class="cart-price">₱${Number(item.Price).toFixed(2)}</div>
+                <input type="number" value="${item.qty}" min="1" class="cart-quantity">
+            </div>
+            <i class="fas fa-trash cart-remove"></i>
+        </div>`;
+    });
+
+    cartContent.innerHTML = html;
+    document.querySelector(".total-price").innerText = `₱${total.toFixed(2)}`;
+
+    // Add event listeners
+    document.querySelectorAll('.cart-remove').forEach((button, idx) => {
+        button.addEventListener('click', function() {
+            cart.splice(idx, 1);
+            renderCart();
+        });
+    });
+
+    document.querySelectorAll('.cart-quantity').forEach((input, idx) => {
+        input.addEventListener('change', function() {
+            let val = parseInt(this.value);
+            if (isNaN(val) || val < 1) val = 1;
+            cart[idx].qty = val;
+            renderCart();
+        });
+    });
+
+    updateCartBadge();
+}
+
+// Update cart badge
+function updateCartBadge() {
+    let totalQty = cart.reduce((sum, item) => sum + item.qty, 0);
+    const badge = document.getElementById('cart-badge');
+    if (badge) {
+        badge.textContent = totalQty;
+        badge.style.display = totalQty > 0 ? 'inline-block' : 'none';
+    }
+}
+
+// Example: Attach addToCart to your product buttons after rendering products
+// $('.add-cart').click(function() { addToCart(product); });
+
+// Call renderCart() on page load if you want to initialize the cart badge
+renderCart();
             $(document).ready(function() {
                 // CODE FOR THE FORMSPREE
                 window.onbeforeunload = () => {
@@ -553,78 +644,6 @@
                         const idx = $(this).data('idx');
                         addToCart(products[idx]);
                     });
-                }
-
-                function addToCart(product) {
-                    // Check if already in cart
-                    let found = cart.find(item => item.Product_ID === product.Product_ID);
-                    if (found) {
-                        found.qty += 1;
-                    } else {
-                        cart.push({...product, qty: 1});
-                    }
-                    renderCart();
-                }
-
-                function renderCart() {
-                    let html = '';
-                    let subtotal = 0;
-                    cart.forEach(function(item, idx) {
-                        let imagePath = item.product_image
-                            ? ('../admin_panel' + item.product_image.substring(1))
-                            : '../assets/images/cart-item-1.png';
-                        let itemTotal = item.Price * item.qty;
-                        subtotal += itemTotal;
-                        html += `
-        <div class="cart-item d-flex align-items-center mb-3 pb-2 border-bottom">
-            <img src="${imagePath}" class="cart-img-thumb me-3" style="width:64px;height:64px;object-fit:cover;border-radius:8px;">
-            <div class="flex-grow-1">
-                <div class="cart-product-title fw-bold" style="font-size:1.1rem;">${item.Product_name}</div>
-                <div class="text-muted" style="font-size:1rem;">₱${Number(item.Price).toFixed(2)}</div>
-                <div class="d-flex align-items-center mt-2" style="max-width:120px;">
-                    <button class="cart-minus" style="width:32px;height:32px;background:var(--main-color);color:#fff;border-radius:5px;border:none;font-size:1.5rem;display:flex;align-items:center;justify-content:center;" data-idx="${idx}">−</button>
-                    <input type="text" class="cart-qty-input mx-1" value="${item.qty}" style="width:48px;height:32px;text-align:center;font-size:1.2rem;border:1px solid var(--main-color);border-radius:5px;" data-idx="${idx}" readonly>
-                    <button class="cart-plus" style="width:32px;height:32px;background:var(--main-color);color:#fff;border-radius:5px;border:none;font-size:1.5rem;display:flex;align-items:center;justify-content:center;" data-idx="${idx}">+</button>
-                </div>
-            </div>
-            <button class="cart-remove" data-idx="${idx}" title="Remove" style="background:none;border:none;padding:0;margin-left:10px;display:flex;align-items:center;justify-content:center;color:var(--main-color);font-size:2rem;">
-                <i class="fa fa-trash"></i>
-            </button>
-        </div>
-    `;
-                    });
-                    html += `
-        <hr>
-        <div class="d-flex justify-content-between align-items-center fw-bold fs-5 mb-3">
-            <span>Total:</span>
-            <span class="total-price">₱${subtotal.toFixed(2)}</span>
-        </div>
-    `;
-                    $('.cart-content').html(html);
-
-                    // Plus button
-                    $('.cart-plus').click(function() {
-                        const idx = $(this).data('idx');
-                        cart[idx].qty += 1;
-                        renderCart();
-                    });
-                    // Minus button
-                    $('.cart-minus').click(function() {
-                        const idx = $(this).data('idx');
-                        if (cart[idx].qty > 1) {
-                            cart[idx].qty -= 1;
-                        } else {
-                            cart.splice(idx, 1);
-                        }
-                        renderCart();
-                    });
-                    // Remove button
-                    $('.cart-remove').click(function() {
-                        const idx = $(this).data('idx');
-                        cart.splice(idx, 1);
-                        renderCart();
-                    });
-                    updateCartBadge();
                 }
 
                 function loadProducts() {

@@ -418,6 +418,8 @@
                                 <img src="assets/images/pic-1.png" alt="" class="user">
                                 <h3>Jane Doe</h3>
                                 <div class="stars">
+                                <h3>Jane Doe</h3>
+                                <div class="stars">
                                     <i class="fas fa-star"></i>
                                     <i class="fas fa-star"></i>
                                     <i class="fas fa-star"></i>
