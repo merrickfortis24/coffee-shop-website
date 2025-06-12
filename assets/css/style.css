@@ -793,6 +793,8 @@ section {
     display: none; /* Hide by default */
 }
 
+
+
 /* MEDIA QUERIES */
 @media (max-width:991px){
     html { 

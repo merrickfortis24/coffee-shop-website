@@ -80,23 +80,17 @@ function buyButtonClicked() {
         alert('Your cart is empty!');
         return;
     }
-
     const payMethod = document.querySelector('input[name="pay_method"]:checked').value;
     const invoiceNumber = generateInvoiceNumber();
-    const orderDetails = [];
+    const orderDetails = cart.map(item => ({
+        title: item.title, // Use the correct property name
+        price: parseFloat(item.price.toString().replace("₱", "")), // Remove ₱ if present
+        quantity: item.qty,
+        subtotal_amount: parseFloat(item.price.toString().replace("₱", "")) * item.qty,
+        invoice_number: invoiceNumber,
+        pay_method: payMethod // Include payment method
+    }));
 
-    cart.forEach(item => {
-        orderDetails.push({
-            title: item.Product_name,
-            price: item.Price,
-            quantity: item.qty,
-            subtotal_amount: (item.Price * item.qty),
-            invoice_number: invoiceNumber,
-            pay_method: payMethod // This should be a string like "GCash"
-        });
-    });
-
-    // Send to server
     fetch('add_to_database.php', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -114,11 +108,6 @@ function buyButtonClicked() {
         alert('Error placing order');
     });
 }
-
-// Example: Checkout button click handler
-document.querySelector('.btn-buy').addEventListener('click', function() {
-    // ...duplicate logic...
-});
 
 // Function to generate invoice number
 function generateInvoiceNumber() {

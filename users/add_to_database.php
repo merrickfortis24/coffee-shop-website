@@ -7,6 +7,9 @@ include 'db.php';
 // Get order details from POST request
 $orderDetails = json_decode(file_get_contents('php://input'), true);
 
+// Debug: Log the received order details to a file
+error_log(print_r($orderDetails, true), 3, "debug.log");
+
 session_start();
 
 if (!isset($_SESSION['username'])) {
@@ -30,62 +33,33 @@ $row = $result->fetch_assoc();
 $user_id = $row['user_id'];
 
 // Insert orders
+$date = date('Y-m-d');
+
+// Use prepared statements for secure insertion
+$stmt = $con->prepare("INSERT INTO orders 
+    (title, price, quantity, subtotal_amount, date, invoice_number, user_id, pay_method, order_status, pay_status)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, 'Pending', 'Unpaid')");
+
 foreach ($orderDetails as $order) {
-    $title = $con->real_escape_string($order['title']);
+    $title = $order['title'];
     $price = floatval($order['price']);
     $quantity = intval($order['quantity']);
     $subtotal = floatval($order['subtotal_amount']);
-    $invoice = $con->real_escape_string($order['invoice_number']);
-    $pay_method = $con->real_escape_string($order['pay_method']);
-    $date = date('Y-m-d');
+    $invoice = $order['invoice_number'];
+    $pay_method = $order['pay_method'] ?? '';
 
-    $sql = "INSERT INTO orders (title, price, quantity, subtotal_amount, date, invoice_number, user_id, pay_method, order_status, pay_status)
-            VALUES ('$title', $price, $quantity, $subtotal, '$date', '$invoice', $user_id, '$pay_method', 'Pending', 'Unpaid')";
+    $stmt->bind_param(
+        "sddissis", // string, double, double, integer, string, string, integer, string
+        $title, $price, $quantity, $subtotal, $date, $invoice, $user_id, $pay_method
+    );
 
-    if (!$con->query($sql)) {
-        echo "Error: " . $con->error;
+    if (!$stmt->execute()) {
+        error_log("Error: " . $stmt->error . "\n", 3, "debug.log");
     }
 }
+$stmt->close();
 
 $con->close();
 echo "Orders added successfully!";
 ?>
 
-<script>
-$(document).on('click', '.btn-buy', function() {
-    if (cart.length === 0) {
-        alert('Your cart is empty!');
-        return;
-    }
-    // Get selected payment method
-    let pay_method = $('input[name="pay_method"]:checked').val();
-
-    // Prepare order details
-    let invoiceNumber = "INV-" + Math.floor(Math.random() * 1000000);
-    let orderDetails = cart.map(item => ({
-        title: item.Product_name,
-        price: item.Price,
-        quantity: item.qty,
-        subtotal_amount: (item.Price * item.qty),
-        invoice_number: invoiceNumber,
-        pay_method: pay_method
-    }));
-
-    // Send to server
-    fetch('add_to_database.php', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(orderDetails)
-    })
-    .then(res => res.text())
-    .then(data => {
-        alert('Order placed!');
-        cart = [];
-        renderCart();
-    })
-    .catch(err => {
-        alert('Order failed!');
-        console.error(err);
-    });
-});
-</script>
