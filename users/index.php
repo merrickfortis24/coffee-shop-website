@@ -10,7 +10,7 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
-        <title>Nai Tsa</title>
+        <title>NaiTsa</title>
 
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous"></script>
@@ -29,7 +29,7 @@
         <!-- HEADER SECTION -->
         <header class="header">
             <a href="#" class="logo">
-                <img src="../assets/images/logo.png" class="img-logo" alt="Nai Tsa Logo">
+                <img src="../assets/images/logo.png" class="img-logo" alt="KapeTann Logo">
             </a>
 
             <!-- MAIN MENU FOR SMALLER DEVICES -->
@@ -55,16 +55,13 @@
                         </li>
                         <li class="nav-item">
                             <a href="logout.php" class="text-decoration-none">Logout</a>
-                        </li>
+                        </li>   
                     </ul>
                 </div>
             </nav>
             <div class="icons">
                 <div class="fas fa-search" id="search-btn"></div>
-                <div class="fas fa-shopping-cart position-relative" id="cart-btn">
-                    <span id="cart-badge" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="display:none; font-size:0.8rem;">0</span>
-                </div>
-                <div class="fas fa-user" id="profile-btn"></div>
+                <div class="fas fa-shopping-cart" id="cart-btn"></div>
                 <div class="fas fa-bars" id="menu-btn"></div>
             </div>
 
@@ -74,40 +71,41 @@
                 <label for="search-box" class="fas fa-search"></label>
             </div>
 
-            <!-- CART SECTION -->
-            <div class="cart">
-                <h2 class="cart-title">Your Cart:</h2>
-                <div class="cart-content">
-                    
-                </div>
-                <div class="total">
-                    <div class="total-title">Total: </div>
-                    <div class="total-price">₱0</div>
-                </div>
-                <div class="mb-3">
-    <label class="fw-bold mb-2">Payment Method:</label><br>
-    <div class="form-check form-check-inline">
-        <input class="form-check-input" type="radio" name="pay_method" id="cod" value="Cash on Delivery" checked>
-        <label class="form-check-label" for="cod">Cash on Delivery</label>
+<!-- CART SECTION -->
+<div class="cart p-3" style="max-width:400px;">
+    <h2 class="cart-title text-center mb-3" style="font-weight:700;">Your Cart:</h2>
+    <div class="cart-content"></div>
+    <hr>
+    <div class="d-flex justify-content-between align-items-center mb-2">
+        <div class="total-title fw-bold">Total:</div>
+        <div class="total-price fw-bold fs-4">₱0</div>
     </div>
-    <div class="form-check form-check-inline">
-        <input class="form-check-input" type="radio" name="pay_method" id="gcash" value="GCash">
-        <label class="form-check-label" for="gcash">GCash</label>
-    </div>
-    <div class="form-check form-check-inline">
-        <input class="form-check-input" type="radio" name="pay_method" id="cc" value="Credit Card">
-        <label class="form-check-label" for="cc">Credit Card</label>
-    </div>
-</div>
-                <!-- BUY BUTTON -->
-                <button type="button" class="btn-buy">Checkout Now</button>
+    <form id="checkout-form">
+        <div class="mb-3">
+            <label class="fw-bold mb-2 d-block">Payment Method:</label>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="pay_method" id="cod" value="Cash on Delivery" checked>
+                <label class="form-check-label" for="cod">Cash On Delivery</label>
             </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="pay_method" id="gcash" value="GCash">
+                <label class="form-check-label" for="gcash">GCash</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="pay_method" id="cc" value="Credit Card">
+                <label class="form-check-label" for="cc">Credit Card</label>
+            </div>
+        </div>
+        <button type="button" class="btn btn-buy w-100 btn-lg" style="background:#8B5C2A;color:#fff;">Checkout Now</button>
+    </form>
+</div>
         </header>
+
 
         <!-- HERO SECTION -->
         <section class="home" id="home">
             <div class="content">
-                <h3>Welcome to Nai Tsa Bubble Tea & Food Hub, <?php echo $_SESSION['username']; ?>!</h3>
+                <h3>Welcome to KapeTann Coffee Shop, <?php echo $_SESSION['username']; ?>!</h3>
                 <p>
                     <strong>We are open 4:00 PM to 9:00 PM.</strong>
                 </p>
@@ -123,12 +121,21 @@
                     <img src="../assets/images/about-img.png" alt="" class="img-fluid">
                 </div>
                 <div class="content">
-                    <h3>Welcome to Nai Tsa!</h3>
+                    <h3>Welcome to KapeTann!</h3>
                     <p>
-                        At Nai Tsa, we’re passionate about blending fun, flavor, and creativity into every sip and bite. Located in the heart of the city, we’re a vibrant hub dedicated to serving delicious bubble tea, refreshing drinks, and mouthwatering food that brings people together. Our journey began with a love for bold flavors and innovative recipes, inspiring us to craft unique drinks with the freshest ingredients, chewy boba pearls, and endless customization.
+                        At KapeTann Coffee Shop, we are passionate about coffee and believe
+                        that every cup tells a story. We are a cozy coffee shop located
+                        in the heart of the city, dedicated to providing an exceptional
+                        coffee experience to our customers. Our love for coffee has led
+                        us on a voyage of exploration and discovery, as we travel the
+                        world in search of the finest coffee beans, carefully roasted
+                        and brewed to perfection.
                     </p>
                     <p>
-                        But Nai Tsa is more than just a drink or a meal, it’s an experience. Our lively and welcoming space is designed to be a go-to spot for friends, families, and bubble tea enthusiasts to unwind, share laughs, and explore a world of flavors. Whether you’re craving a classic milk tea, a fruity explosion, or a savory snack, every visit is a chance to taste happiness in every bubble!
+                        But coffee is not just a drink, it's an experience. Our warm and
+                        inviting atmosphere at KapeTann is designed to be a haven
+                        for coffee lovers, where they can relax, connect, and embark
+                        on their own coffee voyages.
                     </p>
                     <a href="#" class="btn btn-dark text-decoration-none">Learn More</a>
                 </div>
@@ -137,13 +144,13 @@
 
         <!-- MENU SECTION -->
         <section class="menu" id="menu">
-            <h1 class="heading">Our <span>Menu</span></h1>
-            <div class="box-container">
-                <div class="container">
-                    <div class="row" id="product-list"></div>
-                </div>
-            </div>
-        </section>
+    <h1 class="heading">Our <span>Menu</span></h1>
+    <div class="box-container">
+        <div class="container">
+            <div class="row" id="product-list"></div>
+        </div>
+    </div>
+</section>
 
         <!-- GALLERY SECTION -->
         <section class="gallery" id="gallery">
@@ -491,178 +498,184 @@
         <script src="../assets/js/responses.js"></script>
         <script src="../assets/js/convo.js"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
         <script>
-            let cart = []; // Place this at the top, outside of $(document).ready()
+            // CODE FOR THE FORMSPREE
+            window.onbeforeunload = () => {
+                for(const form of document.getElementsByTagName('form')) {
+                    form.reset();
+                }
+            }
 
+            // CODE FOR THE GOOGLE MAPS API
+            function initMap() {
+                var map = new google.maps.Map(document.getElementById('map'), {
+                    center: {lat: 14.99367271992383, lng: 120.17629231186626},
+                    zoom: 9
+                });
+
+                var marker = new google.maps.Marker({
+                    position: {lat: 14.99367271992383, lng: 120.17629231186626},
+                    map: map,
+                    title: 'Your Location'
+                });
+            }
+
+            // CODE FOR THE SHOW MORE & SHOW LESS BUTTON IN MENU
             $(document).ready(function() {
-                // CODE FOR THE FORMSPREE
-                window.onbeforeunload = () => {
-                    for(const form of document.getElementsByTagName('form')) {
-                        form.reset();
-                    }
-                }
-
-                // CODE FOR THE GOOGLE MAPS API
-                function initMap() {
-                    var map = new google.maps.Map(document.getElementById('map'), {
-                        center: {lat: 14.99367271992383, lng: 120.17629231186626},
-                        zoom: 9
-                    });
-
-                    var marker = new google.maps.Marker({
-                        position: {lat: 14.99367271992383, lng: 120.17629231186626},
-                        map: map,
-                        title: 'Your Location'
-                    });
-                }
-
-                // CODE FOR THE SHOW MORE & SHOW LESS BUTTON IN MENU
-                $(document).ready(function() {
-                    $(".row-to-hide").hide();
-                    $("#showHideBtn").text("SHOW MORE");
-                    $("#showHideBtn").click(function() {
-                        $(".row-to-hide").toggle();
-                        if ($(".row-to-hide").is(":visible")) {
-                            $(this).text("SHOW LESS");
-                        } else {
-                            $(this).text("SHOW MORE");
-                        }
-                    });
-                });
-
-                // CODE FOR THE SHOW MORE & SHOW LESS BUTTON IN GALLERY
-                $(document).ready(function() {
-                    $(".pic-to-hide").hide();
-                    $("#showBtn").text("SHOW MORE");
-                    $("#showBtn").click(function() {
-                        $(".pic-to-hide").toggle();
-                        if ($(".pic-to-hide").is(":visible")) {
-                            $(this).text("SHOW LESS");
-                        } else {
-                            $(this).text("SHOW MORE");
-                        }
-                    });
-                });
-
-                function renderProducts(products) {
-                    let html = '';
-                    products.forEach(function(product, idx) {
-                        let imagePath = '../admin_panel' + product.product_image.substring(1);
-                        html += `
-                            <div class="col-md-4">
-                                <div class="box">
-                                    <img src="${imagePath}" alt="" class="product-img">
-                                    <h3 class="product-title">${product.Product_name}</h3>
-                                    <div class="price">₱${product.Price}</div>
-                                    <a class="btn add-cart" data-idx="${idx}">Add to Cart</a>
-                                </div>
-                            </div>
-                        `;
-                    });
-                    $('#product-list').html(html);
-
-                    // Attach click handler after rendering
-                    $('.add-cart').click(function() {
-                        const idx = $(this).data('idx');
-                        addToCart(products[idx]);
-                    });
-                }
-
-                function addToCart(product) {
-                    // Check if already in cart
-                    let found = cart.find(item => item.Product_ID === product.Product_ID);
-                    if (found) {
-                        found.qty += 1;
+                $(".row-to-hide").hide();
+                $("#showHideBtn").text("SHOW MORE");
+                $("#showHideBtn").click(function() {
+                    $(".row-to-hide").toggle();
+                    if ($(".row-to-hide").is(":visible")) {
+                        $(this).text("SHOW LESS");
                     } else {
-                        cart.push({...product, qty: 1});
+                        $(this).text("SHOW MORE");
                     }
-                    renderCart();
-                }
+                });
+            });
 
-                function renderCart() {
-                    let html = '';
-                    let subtotal = 0;
-                    cart.forEach(function(item, idx) {
-                        let imagePath = item.product_image
-                            ? ('../admin_panel' + item.product_image.substring(1))
-                            : '../assets/images/cart-item-1.png';
-                        let itemTotal = item.Price * item.qty;
-                        subtotal += itemTotal;
-                        html += `
-        <div class="cart-item d-flex align-items-center mb-3 pb-2 border-bottom">
-            <img src="${imagePath}" class="cart-img-thumb me-3" style="width:64px;height:64px;object-fit:cover;border-radius:8px;">
-            <div class="flex-grow-1">
-                <div class="cart-product-title fw-bold" style="font-size:1.1rem;">${item.Product_name}</div>
-                <div class="text-muted" style="font-size:1rem;">₱${Number(item.Price).toFixed(2)}</div>
-                <div class="d-flex align-items-center mt-2" style="max-width:120px;">
-                    <button class="cart-minus" style="width:32px;height:32px;background:var(--main-color);color:#fff;border-radius:5px;border:none;font-size:1.5rem;display:flex;align-items:center;justify-content:center;" data-idx="${idx}">−</button>
-                    <input type="text" class="cart-qty-input mx-1" value="${item.qty}" style="width:48px;height:32px;text-align:center;font-size:1.2rem;border:1px solid var(--main-color);border-radius:5px;" data-idx="${idx}" readonly>
-                    <button class="cart-plus" style="width:32px;height:32px;background:var(--main-color);color:#fff;border-radius:5px;border:none;font-size:1.5rem;display:flex;align-items:center;justify-content:center;" data-idx="${idx}">+</button>
+            // CODE FOR THE SHOW MORE & SHOW LESS BUTTON IN GALLERY
+            $(document).ready(function() {
+                $(".pic-to-hide").hide();
+                $("#showBtn").text("SHOW MORE");
+                $("#showBtn").click(function() {
+                    $(".pic-to-hide").toggle();
+                    if ($(".pic-to-hide").is(":visible")) {
+                        $(this).text("SHOW LESS");
+                    } else {
+                        $(this).text("SHOW MORE");
+                    }
+                });
+            });
+
+            function renderProducts(products) {
+    let html = '';
+    products.forEach(function(product, idx) {
+        let imagePath = '../admin_panel' + product.product_image.substring(1);
+        html += `
+            <div class="col-md-4">
+                <div class="box">
+                    <img src="${imagePath}" alt="" class="product-img">
+                    <h3 class="product-title">${product.Product_name}</h3>
+                    <div class="price">₱${product.Price}</div>
+                    <a class="btn add-cart" data-idx="${idx}">Add to Cart</a>
                 </div>
             </div>
-            <button class="cart-remove" data-idx="${idx}" title="Remove" style="background:none;border:none;padding:0;margin-left:10px;display:flex;align-items:center;justify-content:center;color:var(--main-color);font-size:2rem;">
-                <i class="fa fa-trash"></i>
-            </button>
-        </div>
-    `;
-                    });
-                    html += `
-        <hr>
-        <div class="d-flex justify-content-between align-items-center fw-bold fs-5 mb-3">
-            <span>Total:</span>
-            <span class="total-price">₱${subtotal.toFixed(2)}</span>
-        </div>
-    `;
-                    $('.cart-content').html(html);
+        `;
+    });
+    $('#product-list').html(html);
 
-                    // Plus button
-                    $('.cart-plus').click(function() {
-                        const idx = $(this).data('idx');
-                        cart[idx].qty += 1;
-                        renderCart();
-                    });
-                    // Minus button
-                    $('.cart-minus').click(function() {
-                        const idx = $(this).data('idx');
-                        if (cart[idx].qty > 1) {
-                            cart[idx].qty -= 1;
-                        } else {
-                            cart.splice(idx, 1);
-                        }
-                        renderCart();
-                    });
-                    // Remove button
-                    $('.cart-remove').click(function() {
-                        const idx = $(this).data('idx');
-                        cart.splice(idx, 1);
-                        renderCart();
-                    });
-                    updateCartBadge();
-                }
+    // Attach click handler after rendering
+    $('.add-cart').click(function() {
+        const idx = $(this).data('idx');
+        addToCart(products[idx]);
+    });
+}
 
-                function updateCartBadge() {
-                    let totalQty = 0;
-                    cart.forEach(item => {
-                        totalQty += item.qty;
-                    });
-                    const badge = document.getElementById('cart-badge');
-                    if (badge) {
-                        badge.textContent = totalQty;
-                        badge.style.display = totalQty > 0 ? 'inline-block' : 'none';
-                    }
-                }
+function loadProducts() {
+    $.getJSON('../ajax/get_products.php', function(products) {
+        renderProducts(products);
+    });
+}
 
-                function loadProducts() {
-                    $.getJSON('../ajax/get_products.php', function(products) {
-                        renderProducts(products);
-                    });
-                }
+loadProducts();
+setInterval(loadProducts, 5000); // Auto-refresh
 
-                loadProducts();
-                setInterval(loadProducts, 5000); // Auto-refresh
-            });
-        </script>
+// --- CART FUNCTIONALITY ---
+let cart = [];
+
+function addToCart(product) {
+    // Check if product already in cart
+    const found = cart.find(item => item.Product_name === product.Product_name);
+    if (found) {
+        found.quantity += 1;
+    } else {
+        cart.push({...product, quantity: 1});
+    }
+    renderCart();
+}
+
+function removeFromCart(productName) {
+    cart = cart.filter(item => item.Product_name !== productName);
+    renderCart();
+}
+
+function changeQuantity(productName, delta) {
+    const item = cart.find(item => item.Product_name === productName);
+    if (item) {
+        item.quantity += delta;
+        if (item.quantity <= 0) {
+            removeFromCart(productName);
+        } else {
+            renderCart();
+        }
+    }
+}
+
+function renderCart() {
+    let html = '';
+    let total = 0;
+    cart.forEach(item => {
+        total += item.Price * item.quantity;
+        html += `
+            <div class="cart-item d-flex align-items-center mb-2">
+                <img src="../admin_panel${item.product_image.substring(1)}" alt="" style="width:40px;height:40px;object-fit:cover;margin-right:8px;">
+                <span class="me-2">${item.Product_name}</span>
+                <span class="me-2">₱${item.Price}</span>
+                <span class="me-2">x${item.quantity}</span>
+                <button class="btn btn-sm btn-outline-secondary me-1" onclick="changeQuantity('${item.Product_name}', 1)">+</button>
+                <button class="btn btn-sm btn-outline-secondary me-1" onclick="changeQuantity('${item.Product_name}', -1)">-</button>
+                <button class="btn btn-sm btn-danger" onclick="removeFromCart('${item.Product_name}')">&times;</button>
+            </div>
+        `;
+    });
+    $('.cart-content').html(html);
+    $('.total-price').text('₱' + total);
+}
+
+// Checkout button handler
+$('.btn-buy').click(function() {
+    if (cart.length === 0) {
+        alert('Your cart is empty!');
+        return;
+    }
+    // Get selected payment method
+    const payMethod = $('input[name="pay_method"]:checked').val();
+    // Generate a random invoice number (or use a better method if you want)
+    const invoiceNumber = 'INV' + Date.now();
+
+    // Prepare order details
+    const orderDetails = cart.map(item => ({
+        title: item.Product_name,
+        price: parseFloat(item.Price),
+        quantity: item.quantity,
+        subtotal_amount: parseFloat(item.Price) * item.quantity,
+        invoice_number: invoiceNumber,
+        pay_method: payMethod
+    }));
+
+    // Send to server
+    fetch('add_to_database.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(orderDetails)
+    })
+    .then(response => response.text())
+    .then(data => {
+        alert('Order placed successfully!');
+        cart = [];
+        renderCart();
+    })
+    .catch(err => {
+        alert('There was an error placing your order.');
+    });
+});
+
+// Make cart functions available globally for inline onclick
+window.addToCart = addToCart;
+window.removeFromCart = removeFromCart;
+window.changeQuantity = changeQuantity;
+        </script> 
     </body>
 </html>

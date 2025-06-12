@@ -100,7 +100,7 @@ function buyButtonClicked() {
     .then(data => {
         alert('Order placed successfully!');
         cart = [];
-        renderCart();
+
         document.querySelector('.cart').classList.remove('active');
     })
     .catch(err => {
@@ -148,8 +148,8 @@ function addCartClicked(event) {
     } else {
         cart.push({ title: title, price: price, productImg: productImg, qty: 1 });
     }
-    renderCart();
 }
+
 
 function addProductToCart(title, price, productImg) {
     var cartShopBox = document.createElement("div");
@@ -213,15 +213,3 @@ function updateCartBadge() {
         badge.style.display = totalQty > 0 ? 'inline-block' : 'none';
     }
 }
-
-function renderCart() {
-    var cartContent = document.getElementsByClassName("cart-content")[0];
-    cartContent.innerHTML = '';
-    cart.forEach(item => {
-        // ...create and append cart item elements as before...
-    });
-    updateTotal();
-    updateCartBadge(); // <-- Make sure this is called here
-}
-
-let cart = [];

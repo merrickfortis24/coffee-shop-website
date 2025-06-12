@@ -1,0 +1,39 @@
+Array
+(
+    [0] => Array
+        (
+            [title] => ytm
+            [price] => 67
+            [quantity] => 2
+            [subtotal_amount] => 134
+            [invoice_number] => INV1749739490601
+            [pay_method] => Cash on Delivery
+        )
+
+)
+Array
+(
+    [0] => Array
+        (
+            [title] => Kapetan
+            [price] => 120
+            [quantity] => 2
+            [subtotal_amount] => 240
+            [invoice_number] => INV1749739507588
+            [pay_method] => Cash on Delivery
+        )
+
+)
+Array
+(
+    [0] => Array
+        (
+            [title] => Kapetan
+            [price] => 120
+            [quantity] => 2
+            [subtotal_amount] => 240
+            [invoice_number] => INV1749739542716
+            [pay_method] => GCash
+        )
+
+)
