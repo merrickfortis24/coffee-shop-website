@@ -623,10 +623,11 @@ function renderCart() {
                 <img src="../admin_panel${item.product_image.substring(1)}" alt="" style="width:40px;height:40px;object-fit:cover;margin-right:8px;">
                 <span class="me-2">${item.Product_name}</span>
                 <span class="me-2">₱${item.Price}</span>
-                <span class="me-2">x${item.quantity}</span>
                 <button class="btn btn-sm btn-outline-secondary me-1" onclick="changeQuantity('${item.Product_name}', 1)">+</button>
+                <span class="me-2">x${item.quantity}</span>
                 <button class="btn btn-sm btn-outline-secondary me-1" onclick="changeQuantity('${item.Product_name}', -1)">-</button>
-                <button class="btn btn-sm btn-danger" onclick="removeFromCart('${item.Product_name}')">&times;</button>
+                <button class="btn btn-sm btn-danger" onclick="removeFromCart('${item.Product_name}')">
+                    <i class="fa fa-trash"></i></button>
             </div>
         `;
     });
