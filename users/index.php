@@ -61,7 +61,10 @@
             </nav>
             <div class="icons">
                 <div class="fas fa-search" id="search-btn"></div>
-                <div class="fas fa-shopping-cart" id="cart-btn"></div>
+                <div class="fas fa-shopping-cart" id="cart-btn">
+                    <span id="cart-badge" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="display:none; font-size:0.8rem;">0</span>
+                </div>
+                <div class="fas fa-user" id="profile-btn"></div>
                 <div class="fas fa-bars" id="menu-btn"></div>
             </div>
 
@@ -99,7 +102,21 @@
         <button type="button" class="btn btn-buy w-100 btn-lg" style="background:#8B5C2A;color:#fff;">Checkout Now</button>
     </form>
 </div>
+
+<!-- PROFILE SIDEBAR SECTION -->
+<div class="profile-sidebar" id="profile-sidebar">
+    <div class="profile-sidebar-header">
+        <h4>My Orders</h4>
+        <button id="close-profile-sidebar">&times;</button>
+    </div>
+    <div id="orders-list" class="profile-orders-list">
+        <div>Loading orders...</div>
+    </div>
+</div>
+
         </header>
+
+        
 
 
         <!-- HERO SECTION -->
@@ -492,6 +509,17 @@
             </div>
         </div>
 
+        <!-- Checkout Option Modal -->
+<div id="checkout-modal" class="modal" style="display:none; position:fixed; z-index:9999; left:0; top:0; width:100vw; height:100vh; background:rgba(0,0,0,0.5); align-items:center; justify-content:center;">
+  <div style="background:#fff; padding:2rem; border-radius:8px; max-width:350px; margin:auto; text-align:center;">
+    <h3>Choose Order Type</h3>
+    <button id="pickup-btn" style="margin:1rem;">Pick Up</button>
+    <button id="delivery-btn" style="margin:1rem;">Delivery</button>
+    <br>
+    <button id="close-modal" style="margin-top:1rem;">Cancel</button>
+  </div>
+</div>
+
         <!-- JS File Link -->
         <script src="../assets/js/googleSignIn.js"></script>
         <script src="../assets/js/script.js"></script>
@@ -633,6 +661,7 @@ function renderCart() {
     });
     $('.cart-content').html(html);
     $('.total-price').text('₱' + total);
+     updateCartBadge();
 }
 
 // Checkout button handler
@@ -641,42 +670,48 @@ $('.btn-buy').click(function() {
         alert('Your cart is empty!');
         return;
     }
-    // Get selected payment method
-    const payMethod = $('input[name="pay_method"]:checked').val();
-    // Generate a random invoice number (or use a better method if you want)
-    const invoiceNumber = 'INV' + Date.now();
-
-    // Prepare order details
-    const orderDetails = cart.map(item => ({
-        title: item.Product_name,
-        price: parseFloat(item.Price),
-        quantity: item.quantity,
-        subtotal_amount: parseFloat(item.Price) * item.quantity,
-        invoice_number: invoiceNumber,
-        pay_method: payMethod
-    }));
-
-    // Send to server
-    fetch('add_to_database.php', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(orderDetails)
-    })
-    .then(response => response.text())
-    .then(data => {
-        alert('Order placed successfully!');
-        cart = [];
-        renderCart();
-    })
-    .catch(err => {
-        alert('There was an error placing your order.');
-    });
+    document.getElementById('checkout-modal').style.display = 'flex';
 });
 
 // Make cart functions available globally for inline onclick
 window.addToCart = addToCart;
 window.removeFromCart = removeFromCart;
 window.changeQuantity = changeQuantity;
+
+// --- PROFILE SIDEBAR FUNCTIONALITY ---
+document.getElementById('profile-btn').onclick = function() {
+    document.getElementById('profile-sidebar').classList.add('active');
+    loadUserOrders();
+};
+document.getElementById('close-profile-sidebar').onclick = function() {
+    document.getElementById('profile-sidebar').classList.remove('active');
+};
+function loadUserOrders() {
+    fetch('orders.php?ajax=1')
+        .then(response => response.text())
+        .then(html => {
+            document.getElementById('orders-list').innerHTML = html;
+        })
+        .catch(() => {
+            document.getElementById('orders-list').innerHTML = 
+                '<div class="text-danger">Failed to load orders.</div>';
+        });
+}
+
+$(document).ready(function() {
+    // Load orders when profile sidebar is opened
+    $('#profile-btn').click(function() {
+        $('#profile-sidebar').css('right', '0');
+        loadOrders();
+    });
+
+    // Close profile sidebar
+    $('#close-profile-sidebar').click(function() {
+        $('#profile-sidebar').css('right', '-400px');
+    });
+});
+
+
         </script> 
     </body>
 </html>

@@ -80,15 +80,34 @@ function buyButtonClicked() {
         alert('Your cart is empty!');
         return;
     }
-    const payMethod = document.querySelector('input[name="pay_method"]:checked').value;
-    const invoiceNumber = generateInvoiceNumber();
+    // Show the modal to choose pickup or delivery
+    document.getElementById('checkout-modal').style.display = 'flex';
+}
+// Modal button handlers
+document.getElementById('pickup-btn').onclick = function() {
+    document.getElementById('checkout-modal').style.display = 'none';
+    proceedCheckout('pickup');
+};
+document.getElementById('delivery-btn').onclick = function() {
+    document.getElementById('checkout-modal').style.display = 'none';
+    proceedCheckout('delivery');
+};
+document.getElementById('close-modal').onclick = function() {
+    document.getElementById('checkout-modal').style.display = 'none';
+};
+
+// Call this from your modal buttons, passing 'pickup' or 'delivery'
+function proceedCheckout(orderType) {
+    const payMethod = $('input[name="pay_method"]:checked').val();
+    const invoiceNumber = 'INV' + Date.now();
     const orderDetails = cart.map(item => ({
-        title: item.title, // Use the correct property name
-        price: parseFloat(item.price.toString().replace("₱", "")), // Remove ₱ if present
-        quantity: item.qty,
-        subtotal_amount: parseFloat(item.price.toString().replace("₱", "")) * item.qty,
+        title: item.Product_name, // match your PHP
+        price: parseFloat(item.Price),
+        quantity: item.quantity,
+        subtotal_amount: parseFloat(item.Price) * item.quantity,
         invoice_number: invoiceNumber,
-        pay_method: payMethod // Include payment method
+        pay_method: payMethod,
+        order_type: orderType // this will be 'pickup' or 'delivery'
     }));
 
     fetch('add_to_database.php', {
@@ -100,12 +119,10 @@ function buyButtonClicked() {
     .then(data => {
         alert('Order placed successfully!');
         cart = [];
-
-        document.querySelector('.cart').classList.remove('active');
+        renderCart();
     })
     .catch(err => {
-        console.error('Error:', err);
-        alert('Error placing order');
+        alert('There was an error placing your order.');
     });
 }
 
@@ -118,9 +135,11 @@ function generateInvoiceNumber() {
 // Function for "Remove Items from Cart"
 function removeCartItem(event) {
     var buttonClicked = event.target;
+    var title = buttonClicked.parentElement.getElementsByClassName("cart-product-title")[0].innerText;
+    cart = cart.filter(item => item.title !== title);
     buttonClicked.parentElement.remove();
     updateTotal();
-    updateCartBadge(); // <-- Add this line
+    updateCartBadge();
 }
 
 // Function for "When quantity changes"
@@ -129,8 +148,14 @@ function quantityChanged(event) {
     if (isNaN(input.value) || input.value <= 0) {
         input.value = 1;
     }
+    // Update the cart array
+    var title = input.parentElement.getElementsByClassName("cart-product-title")[0].innerText;
+    let found = cart.find(item => item.title === title);
+    if (found) {
+        found.quantity = parseInt(input.value);
+    }
     updateTotal();
-    updateCartBadge(); // <-- Add this line
+    updateCartBadge();
 }
 
 //Add to Cart
@@ -144,9 +169,9 @@ function addCartClicked(event) {
     // Check if already in cart
     let found = cart.find(item => item.title === title);
     if (found) {
-        found.qty += 1;
+        found.quantity += 1;
     } else {
-        cart.push({ title: title, price: price, productImg: productImg, qty: 1 });
+        cart.push({ title: title, price: price, productImg: productImg, quantity: 1 });
     }
 }
 
@@ -205,11 +230,32 @@ function updateTotal() {
 function updateCartBadge() {
     let totalQty = 0;
     cart.forEach(item => {
-        totalQty += item.qty;
+        totalQty += item.quantity;
     });
     const badge = document.getElementById('cart-badge');
     if (badge) {
         badge.textContent = totalQty;
         badge.style.display = totalQty > 0 ? 'inline-block' : 'none';
     }
+}
+
+// Show profile sidebar
+document.getElementById('profile-btn').onclick = function() {
+    document.getElementById('profile-sidebar').classList.add('active');
+    loadUserOrders();
+};
+// Hide profile sidebar
+document.getElementById('close-profile-sidebar').onclick = function() {
+    document.getElementById('profile-sidebar').classList.remove('active');
+};
+
+function loadUserOrders() {
+    fetch('orders.php?ajax=1')
+        .then(response => response.text())
+        .then(html => {
+            document.getElementById('orders-list').innerHTML = html;
+        })
+        .catch(() => {
+            document.getElementById('orders-list').innerHTML = '<div class="text-danger">Failed to load orders.</div>';
+        });
 }

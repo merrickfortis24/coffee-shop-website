@@ -37,8 +37,8 @@ $date = date('Y-m-d');
 
 // Use prepared statements for secure insertion
 $stmt = $con->prepare("INSERT INTO orders 
-    (title, price, quantity, subtotal_amount, date, invoice_number, user_id, pay_method, order_status, pay_status)
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?, 'Pending', 'Unpaid')");
+    (title, price, quantity, subtotal_amount, date, invoice_number, user_id, pay_method, order_type, order_status, pay_status)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 'Pending', 'Unpaid')");
 
 foreach ($orderDetails as $order) {
     $title = $order['title'];
@@ -47,10 +47,11 @@ foreach ($orderDetails as $order) {
     $subtotal = floatval($order['subtotal_amount']);
     $invoice = $order['invoice_number'];
     $pay_method = $order['pay_method'] ?? '';
+    $order_type = $order['order_type'];
 
     $stmt->bind_param(
-        "sddissis", // string, double, double, integer, string, string, integer, string
-        $title, $price, $quantity, $subtotal, $date, $invoice, $user_id, $pay_method
+        "sddississ", // string, double, double, integer, string, string, integer, string, string
+        $title, $price, $quantity, $subtotal, $date, $invoice, $user_id, $pay_method, $order_type
     );
 
     if (!$stmt->execute()) {
