@@ -22,35 +22,20 @@ if (isset($_GET['ajax'])) {
     if ($orders->num_rows === 0) {
         echo "<div>No orders found.</div>";
     } else {
-        echo '<table class="table table-bordered table-striped"><thead>
-            <tr>
-                <th>Date</th>
-                <th>Invoice #</th>
-                <th>Title</th>
-                <th>Qty</th>
-                <th>Price</th>
-                <th>Subtotal</th>
-                <th>Order Type</th>
-                <th>Payment Method</th>
-                <th>Status</th>
-                <th>Payment Status</th>
-            </tr>
-        </thead><tbody>';
         while($order = $orders->fetch_assoc()) {
-            echo '<tr>
-                <td>'.htmlspecialchars($order['date']).'</td>
-                <td>'.htmlspecialchars($order['invoice_number']).'</td>
-                <td>'.htmlspecialchars($order['title']).'</td>
-                <td>'.htmlspecialchars($order['quantity']).'</td>
-                <td>₱'.htmlspecialchars($order['price']).'</td>
-                <td>₱'.htmlspecialchars($order['subtotal_amount']).'</td>
-                <td>'.htmlspecialchars($order['order_type']).'</td>
-                <td>'.htmlspecialchars($order['pay_method']).'</td>
-                <td>'.htmlspecialchars($order['order_status']).'</td>
-                <td>'.htmlspecialchars($order['pay_status']).'</td>
-            </tr>';
+            echo '<div class="cart-item mb-3 p-2" style="border-bottom:1px solid #eee;">';
+            echo '<div><strong>Date:</strong> ' . htmlspecialchars($order['date']) . '</div>';
+            echo '<div><strong>Invoice #:</strong> ' . htmlspecialchars($order['invoice_number']) . '</div>';
+            echo '<div><strong>Title:</strong> ' . htmlspecialchars($order['title']) . '</div>';
+            echo '<div><strong>Qty:</strong> ' . htmlspecialchars($order['quantity']) . '</div>';
+            echo '<div><strong>Price:</strong> ₱' . htmlspecialchars($order['price']) . '</div>';
+            echo '<div><strong>Subtotal:</strong> ₱' . htmlspecialchars($order['subtotal_amount']) . '</div>';
+            echo '<div><strong>Order Type:</strong> ' . htmlspecialchars($order['order_type']) . '</div>';
+            echo '<div><strong>Payment Method:</strong> ' . htmlspecialchars($order['pay_method']) . '</div>';
+            echo '<div><strong>Status:</strong> ' . htmlspecialchars($order['order_status']) . '</div>';
+            echo '<div><strong>Payment Status:</strong> ' . htmlspecialchars($order['pay_status']) . '</div>';
+            echo '</div>';
         }
-        echo '</tbody></table>';
     }
     exit;
 }

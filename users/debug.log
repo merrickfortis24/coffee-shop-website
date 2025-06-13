@@ -142,3 +142,17 @@ Array
         )
 
 )
+Array
+(
+    [0] => Array
+        (
+            [title] => ubhuhb
+            [price] => 90
+            [quantity] => 4
+            [subtotal_amount] => 360
+            [invoice_number] => INV1749827925302
+            [pay_method] => Cash on Delivery
+            [order_type] => delivery
+        )
+
+)

@@ -69,6 +69,7 @@ section {
     left: 0;
     right: 0;
     z-index: 1000;
+    height: 100px;
 }
 
 .img-logo {
@@ -867,6 +868,32 @@ section {
     }
 }
 
+.profile,
+.cart {
+    position: fixed;
+    top: 100px; /* Same as header height */
+    right: -100%;
+    height: calc(100vh - 100px); /* Subtract header height */
+    width: 400px;
+    background: #fff;
+    box-shadow: -2px 0 8px rgba(0,0,0,0.1);
+    z-index: 900; /* Lower than header's 1000 */
+    transition: right 0.3s;
+    padding: 2rem 1.5rem 1.5rem 1.5rem;
+    display: flex;
+    flex-direction: column;
+}
+.profile.active,
+.cart.active {
+    right: 0;
+}
+@media (max-width: 500px) {
+    .cart,
+    .profile {
+        width: 100vw;
+    }
+}
+
 .profile-sidebar {
     position: fixed;
     top: 0;
@@ -875,15 +902,14 @@ section {
     width: 400px;
     background: #fff;
     box-shadow: -2px 0 8px rgba(0,0,0,0.1);
-    z-index: 9999;
+    z-index: 10001;
     transition: right 0.3s;
-    display: flex;
-    flex-direction: column;
+    padding: 2rem 1.5rem 1.5rem 1.5rem;
 }
 .profile-sidebar.active {
     right: 0;
 }
-.profile-sidebar-header {
+.profile-header {
     padding: 1.5rem;
     border-bottom: 1px solid #eee;
     display: flex;
@@ -905,4 +931,48 @@ section {
     .profile-sidebar {
         width: 100vw;
     }
+}
+
+.profile {
+    position: fixed;
+    top: 0;
+    right: -100%;
+    width: 100%;
+    max-width: 400px;
+    height: 100vh;
+    background: #fff;
+    padding: 20px;
+    transition: right 0.3s ease;
+    z-index: 900;
+    box-shadow: -2px 0 5px rgba(0,0,0,0.1);
+    overflow-y: auto;
+}
+
+.profile.active {
+    right: 0;
+}
+
+.profile-content {
+    height: calc(100vh - 80px);
+    overflow-y: auto;
+}
+
+.orders-list .cart-item {
+    background: #f8f9fa;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    font-size: 0.9rem;
+}
+
+.quick-actions .btn {
+    text-align: left;
+    padding: 10px 15px;
+}
+
+.quick-actions .btn i {
+    font-size: 1.1rem;
+}
+
+.profile-avatar img {
+    border: 2px solid #8B5C2A;
 }

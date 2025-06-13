@@ -7,14 +7,48 @@ document.querySelector('#menu-btn').onclick = () => {
     searchForm.classList.remove('active');
 }
 
-// Show Cart Items || Close Navbar & Search Textbox
-let cartItem = document.querySelector('.cart');
-
+// Cart sidebar toggle (existing)
+let cartItem = document.querySelector('.cart:not(.profile-sidebar)');
 document.querySelector('#cart-btn').onclick = () => {
     cartItem.classList.toggle('active');
-    navbar.classList.remove('active');
-    searchForm.classList.remove('active');
+    profileSidebar.classList.remove('active'); // hide profile sidebar
+};
+// Profile Sidebar Toggle
+let profileBtn = document.querySelector('#profile-btn');
+let profileSidebar = document.querySelector('#profile-sidebar');
+let sidebarOverlay = document.querySelector('#sidebar-overlay');
+let closeProfileBtn = document.querySelector('#close-profile-sidebar');
+
+profileBtn.onclick = () => {
+    profileSidebar.classList.add('active');
+    sidebarOverlay.style.display = 'block';
+    loadUserOrders(); // Load orders when profile is opened
 }
+
+closeProfileBtn.onclick = () => {
+    profileSidebar.classList.remove('active');
+    sidebarOverlay.style.display = 'none';
+}
+
+sidebarOverlay.onclick = () => {
+    profileSidebar.classList.remove('active');
+    cartSidebar.classList.remove('active');
+    sidebarOverlay.style.display = 'none';
+}
+
+// Toggle Profile Sidebar
+document.getElementById('profile-btn').onclick = function () {
+    if (profileSidebar.classList.contains('active')) {
+        profileSidebar.classList.remove('active');
+    } else {
+        profileSidebar.classList.add('active');
+        cartItem.classList.remove('active'); // hide cart sidebar
+        loadUserOrders();
+    }
+};
+document.getElementById('close-profile-sidebar').onclick = function() {
+    profileSidebar.classList.remove('active');
+};
 
 // Show Search Textbox || Close Navbar & Cart Items
 let searchForm = document.querySelector('.search-form');
@@ -239,29 +273,18 @@ function updateCartBadge() {
     }
 }
 
-// Toggle profile sidebar on icon click
-document.getElementById('profile-btn').onclick = function() {
-    const sidebar = document.getElementById('profile-sidebar');
-    if (sidebar.classList.contains('active')) {
-        sidebar.classList.remove('active');
-    } else {
-        sidebar.classList.add('active');
-        loadUserOrders();
-    }
-};
-
-// Close button still hides the sidebar
 document.getElementById('close-profile-sidebar').onclick = function() {
     document.getElementById('profile-sidebar').classList.remove('active');
 };
 
 function loadUserOrders() {
+    const ordersList = document.getElementById('orders-list');
     fetch('orders.php?ajax=1')
         .then(response => response.text())
         .then(html => {
-            document.getElementById('orders-list').innerHTML = html;
+            ordersList.innerHTML = html || '<div class="text-center text-muted">No orders found</div>';
         })
         .catch(() => {
-            document.getElementById('orders-list').innerHTML = '<div class="text-danger">Failed to load orders.</div>';
+            ordersList.innerHTML = '<div class="text-center text-danger">Failed to load orders</div>';
         });
 }

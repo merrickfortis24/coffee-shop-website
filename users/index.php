@@ -75,7 +75,7 @@
             </div>
 
 <!-- CART SECTION -->
-<div class="cart p-3" style="max-width:400px;">
+<div class="cart" id="cart-sidebar" style="max-width:400px;">
     <h2 class="cart-title text-center mb-3" style="font-weight:700;">Your Cart:</h2>
     <div class="cart-content"></div>
     <hr>
@@ -103,12 +103,55 @@
     </form>
 </div>
 
-<!-- MY ORDERS SIDEBAR -->
-<div class="cart profile-orders-sidebar" id="profile-sidebar">
-    <h2 class="cart-title text-center mb-3" style="font-weight:700;">My Orders</h2>
+<!-- PROFILE SIDEBAR -->
+<div class="profile" id="profile-sidebar" style="max-width:400px;">
+    <h2 class="profile-title text-center mb-3" style="font-weight:700;">My Profile</h2>
     <button id="close-profile-sidebar" class="btn-close" style="position:absolute;top:1rem;right:1rem;"></button>
-    <div id="orders-list" class="cart-content" style="overflow-y:auto;max-height:70vh;">
-        <div>Loading orders...</div>
+    
+    <div class="profile-content p-3">
+        <!-- User Info Section -->
+        <div class="user-info mb-4">
+            <div class="d-flex align-items-center mb-3">
+                <div class="profile-avatar me-3">
+                    <div class="rounded-circle d-flex align-items-center justify-content-center bg-secondary text-white" style="width:60px;height:60px;">
+                        <i class="fas fa-user" style="font-size:1.5rem;"></i>
+                    </div>
+                </div>
+                <div>
+                    <h5 class="mb-0"><?php echo $_SESSION['username']; ?></h5>
+                    <small class="text-muted">Member since <?php echo date('M Y'); ?></small>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="quick-actions mb-4">
+            <h6 class="fw-bold mb-3">Quick Actions</h6>
+            <div class="d-grid gap-2">
+                <a href="orders.php" class="btn btn-outline-secondary d-flex align-items-center justify-content-between">
+                    My Orders <i class="fas fa-shopping-bag"></i>
+                </a>
+                <a href="#" class="btn btn-outline-secondary d-flex align-items-center justify-content-between">
+                    Edit Profile <i class="fas fa-user-edit"></i>
+                </a>
+                <a href="logout.php" class="btn btn-outline-danger d-flex align-items-center justify-content-between">
+                    Logout <i class="fas fa-sign-out-alt"></i>
+                </a>
+            </div>
+        </div>
+
+        <!-- Recent Orders -->
+        <div class="recent-orders">
+            <h6 class="fw-bold mb-3">Recent Orders</h6>
+            <div id="orders-list" class="orders-list" style="max-height:300px;overflow-y:auto;">
+                <div class="text-center text-muted">
+                    <div class="spinner-border spinner-border-sm" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                    Loading orders...
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -518,6 +561,8 @@
   </div>
 </div>
 
+<div id="sidebar-overlay" style="display:none;position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(0,0,0,0.2);z-index:899;"></div>
+
         <!-- JS File Link -->
         <script src="../assets/js/googleSignIn.js"></script>
         <script src="../assets/js/script.js"></script>
@@ -676,14 +721,6 @@ window.addToCart = addToCart;
 window.removeFromCart = removeFromCart;
 window.changeQuantity = changeQuantity;
 
-// --- PROFILE SIDEBAR FUNCTIONALITY ---
-document.getElementById('profile-btn').onclick = function() {
-    document.getElementById('profile-sidebar').classList.add('active');
-    loadUserOrders();
-};
-document.getElementById('close-profile-sidebar').onclick = function() {
-    document.getElementById('profile-sidebar').classList.remove('active');
-};
 function loadUserOrders() {
     fetch('orders.php?ajax=1')
         .then(response => response.text())
@@ -691,23 +728,11 @@ function loadUserOrders() {
             document.getElementById('orders-list').innerHTML = html;
         })
         .catch(() => {
-            document.getElementById('orders-list').innerHTML = 
-                '<div class="text-danger">Failed to load orders.</div>';
+            document.getElementById('orders-list').innerHTML = '<div class="text-danger">Failed to load orders.</div>';
         });
 }
 
-$(document).ready(function() {
-    // Load orders when profile sidebar is opened
-    $('#profile-btn').click(function() {
-        $('#profile-sidebar').css('right', '0');
-        loadOrders();
-    });
 
-    // Close profile sidebar
-    $('#close-profile-sidebar').click(function() {
-        $('#profile-sidebar').css('right', '-400px');
-    });
-});
 
 
         </script> 
