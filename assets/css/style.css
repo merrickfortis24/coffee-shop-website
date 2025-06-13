@@ -933,46 +933,17 @@ section {
     }
 }
 
-.profile {
-    position: fixed;
-    top: 0;
-    right: -100%;
-    width: 100%;
-    max-width: 400px;
-    height: 100vh;
-    background: #fff;
-    padding: 20px;
-    transition: right 0.3s ease;
-    z-index: 900;
-    box-shadow: -2px 0 5px rgba(0,0,0,0.1);
-    overflow-y: auto;
+.profile-nav .nav-link {
+    padding: 0.75rem 1rem;
+    color: var(--bs-gray-700);
+    transition: all 0.2s ease;
 }
 
-.profile.active {
-    right: 0;
+.profile-nav .nav-link:hover {
+    background-color: var(--bs-gray-100);
+    border-radius: 0.5rem;
 }
 
-.profile-content {
-    height: calc(100vh - 80px);
-    overflow-y: auto;
-}
-
-.orders-list .cart-item {
-    background: #f8f9fa;
-    border-radius: 8px;
-    margin-bottom: 10px;
-    font-size: 0.9rem;
-}
-
-.quick-actions .btn {
-    text-align: left;
-    padding: 10px 15px;
-}
-
-.quick-actions .btn i {
+.profile-nav .nav-link i {
     font-size: 1.1rem;
-}
-
-.profile-avatar img {
-    border: 2px solid #8B5C2A;
 }

@@ -12,8 +12,9 @@
         <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
         <title>NaiTsa</title>
 
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous"></script>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.7/dist/umd/popper.min.js" integrity="sha384-zYPOMqeu1DAVkHiLqWBUTcbYfZ8osu1Nd6Z89ify25QV9guujx43ITvfi12/QExE" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.min.js" integrity="sha384-Y4oOpwW3duJdCWv5ly8SCFYWqFDsfob/3GkgExXKV4idmbt98QcxXYs9UoXAB7BZ" crossorigin="anonymous"></script>
         <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD2Hhh_14Uam62GXGaTMcXWhhVkYg0EbDY&callback=initMap" async defer></script>
@@ -108,47 +109,51 @@
     <h2 class="profile-title text-center mb-3" style="font-weight:700;">My Profile</h2>
     <button id="close-profile-sidebar" class="btn-close" style="position:absolute;top:1rem;right:1rem;"></button>
     
-    <div class="profile-content p-3">
-        <!-- User Info Section -->
-        <div class="user-info mb-4">
-            <div class="d-flex align-items-center mb-3">
-                <div class="profile-avatar me-3">
-                    <div class="rounded-circle d-flex align-items-center justify-content-center bg-secondary text-white" style="width:60px;height:60px;">
-                        <i class="fas fa-user" style="font-size:1.5rem;"></i>
+    <div class="profile-content p-4">
+        <!-- User Profile Card -->
+        <div class="card border-0 shadow-sm">
+            <div class="card-body">
+                <!-- User Info Section -->
+                <div class="d-flex align-items-center mb-4">
+                    <div class="profile-avatar me-3">
+                        <div class="rounded-circle d-flex align-items-center justify-content-center bg-primary" 
+                             style="width: 80px; height: 80px;">
+                            <span class="display-6 text-white">
+                                <?php echo strtoupper(substr($_SESSION['username'], 0, 1)); ?>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="profile-info">
+                        <h4 class="mb-1"><?php echo $_SESSION['username']; ?></h4>
+                        <p class="text-muted mb-0">
+                            <i class="bi bi-clock me-2"></i>
+                            Member since <?php echo date('M Y'); ?>
+                        </p>
                     </div>
                 </div>
-                <div>
-                    <h5 class="mb-0"><?php echo $_SESSION['username']; ?></h5>
-                    <small class="text-muted">Member since <?php echo date('M Y'); ?></small>
-                </div>
-            </div>
-        </div>
 
-        <!-- Quick Actions -->
-        <div class="quick-actions mb-4">
-            <h6 class="fw-bold mb-3">Quick Actions</h6>
-            <div class="d-grid gap-2">
-                <a href="orders.php" class="btn btn-outline-secondary d-flex align-items-center justify-content-between">
-                    My Orders <i class="fas fa-shopping-bag"></i>
-                </a>
-                <a href="#" class="btn btn-outline-secondary d-flex align-items-center justify-content-between">
-                    Edit Profile <i class="fas fa-user-edit"></i>
-                </a>
-                <a href="logout.php" class="btn btn-outline-danger d-flex align-items-center justify-content-between">
-                    Logout <i class="fas fa-sign-out-alt"></i>
-                </a>
-            </div>
-        </div>
-
-        <!-- Recent Orders -->
-        <div class="recent-orders">
-            <h6 class="fw-bold mb-3">Recent Orders</h6>
-            <div id="orders-list" class="orders-list" style="max-height:300px;overflow-y:auto;">
-                <div class="text-center text-muted">
-                    <div class="spinner-border spinner-border-sm" role="status">
-                        <span class="visually-hidden">Loading...</span>
-                    </div>
-                    Loading orders...
+                <!-- Navigation Menu -->
+                <div class="profile-nav">
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link d-flex align-items-center" href="orders.php">
+                                <i class="bi bi-bag me-2"></i>
+                                My Orders
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link d-flex align-items-center" href="edit-profile.php">
+                                <i class="bi bi-person-gear me-2"></i>
+                                Edit Profile
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link d-flex align-items-center text-danger" href="logout.php">
+                                <i class="bi bi-box-arrow-right me-2"></i>
+                                Logout
+                            </a>
+                        </li>
+                    </ul>
                 </div>
             </div>
         </div>
