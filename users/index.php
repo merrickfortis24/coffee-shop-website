@@ -103,13 +103,11 @@
     </form>
 </div>
 
-<!-- PROFILE SIDEBAR SECTION -->
-<div class="profile-sidebar" id="profile-sidebar">
-    <div class="profile-sidebar-header">
-        <h4>My Orders</h4>
-        <button id="close-profile-sidebar">&times;</button>
-    </div>
-    <div id="orders-list" class="profile-orders-list">
+<!-- MY ORDERS SIDEBAR -->
+<div class="cart profile-orders-sidebar" id="profile-sidebar">
+    <h2 class="cart-title text-center mb-3" style="font-weight:700;">My Orders</h2>
+    <button id="close-profile-sidebar" class="btn-close" style="position:absolute;top:1rem;right:1rem;"></button>
+    <div id="orders-list" class="cart-content" style="overflow-y:auto;max-height:70vh;">
         <div>Loading orders...</div>
     </div>
 </div>

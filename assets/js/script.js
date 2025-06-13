@@ -239,12 +239,18 @@ function updateCartBadge() {
     }
 }
 
-// Show profile sidebar
+// Toggle profile sidebar on icon click
 document.getElementById('profile-btn').onclick = function() {
-    document.getElementById('profile-sidebar').classList.add('active');
-    loadUserOrders();
+    const sidebar = document.getElementById('profile-sidebar');
+    if (sidebar.classList.contains('active')) {
+        sidebar.classList.remove('active');
+    } else {
+        sidebar.classList.add('active');
+        loadUserOrders();
+    }
 };
-// Hide profile sidebar
+
+// Close button still hides the sidebar
 document.getElementById('close-profile-sidebar').onclick = function() {
     document.getElementById('profile-sidebar').classList.remove('active');
 };
