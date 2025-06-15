@@ -10,8 +10,6 @@
     <a href="./index.php" ><i class="fa fa-home"></i> Dashboard</a>
     <a href="#customers"  onclick="showCustomers()" ><i class="fa fa-users"></i> Customers</a>
     <a href="#category"   onclick="showCategory()" ><i class="fa fa-th-large"></i> Category</a>
-    <a href="#sizes"   onclick="showSizes()" ><i class="fa fa-th"></i> Sizes</a>
-    <a href="#productsizes"   onclick="showProductSizes()" ><i class="fa fa-th-list"></i> Product Sizes</a>    
     <a href="#products"   onclick="showProductItems()" ><i class="fa fa-th"></i> Products</a>
     <a href="#orders" onclick="showOrders()"><i class="fa fa-list"></i> Orders</a>
     <a href="#admins" onclick="showAdmins()"><i class="fa fa-user"></i> Admins</a>

@@ -100,6 +100,18 @@
                 <label class="form-check-label" for="cc">Credit Card</label>
             </div>
         </div>
+
+        <!-- Add this payment instructions dropdown -->
+        <div id="payment-instructions" class="mb-3" style="display: none;">
+            <div class="card border-primary">
+                <div class="card-header bg-primary text-white">
+                    <i class="fas fa-info-circle me-2"></i>Payment Instructions
+                </div>
+                <div class="card-body" id="instructions-content">
+                    <!-- Instructions will be inserted here -->
+                </div>
+            </div>
+        </div>
         <button type="button" class="btn btn-buy w-100 btn-lg" style="background:#8B5C2A;color:#fff;">Checkout Now</button>
     </form>
 </div>
@@ -136,7 +148,7 @@
                 <div class="profile-nav">
                     <ul class="nav flex-column">
                         <li class="nav-item">
-                            <a class="nav-link d-flex align-items-center" href="orders.php">
+                            <a class="nav-link d-flex align-items-center" href="#" id="my-orders-link">
                                 <i class="bi bi-bag me-2"></i>
                                 My Orders
                             </a>
@@ -559,14 +571,194 @@
 <div id="checkout-modal" class="modal" style="display:none; position:fixed; z-index:9999; left:0; top:0; width:100vw; height:100vh; background:rgba(0,0,0,0.5); align-items:center; justify-content:center;">
   <div style="background:#fff; padding:2rem; border-radius:8px; max-width:350px; margin:auto; text-align:center;">
     <h3>Choose Order Type</h3>
-    <button id="pickup-btn" style="margin:1rem;">Pick Up</button>
-    <button id="delivery-btn" style="margin:1rem;">Delivery</button>
+    <button id="pickup-btn" class="btn btn-primary" style="margin:1rem;">Pick Up</button>
+    <button id="delivery-btn" class="btn btn-primary" style="margin:1rem;">Delivery</button>
     <br>
-    <button id="close-modal" style="margin-top:1rem;">Cancel</button>
+    <button id="close-modal" class="btn btn-secondary" style="margin-top:1rem;">Cancel</button>
   </div>
 </div>
 
-<div id="sidebar-overlay" style="display:none;position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(0,0,0,0.2);z-index:899;"></div>
+<!-- Delivery Address Modal (Bootstrap 5) -->
+<div class="modal fade" id="deliveryAddressModal" tabindex="-1" aria-labelledby="deliveryAddressModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <form id="delivery-form">
+        <div class="modal-header">
+          <h5 class="modal-title" id="deliveryAddressModalLabel">Delivery Details</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="mb-3">
+            <label for="street" class="form-label">Street Address</label>
+            <input type="text" class="form-control" id="street" required>
+          </div>
+          <div class="mb-3">
+            <label for="barangay" class="form-label">Barangay</label>
+            <input type="text" class="form-control" id="barangay" required>
+          </div>
+          <div class="mb-3">
+            <label for="city" class="form-label">City</label>
+            <input type="text" class="form-control" id="city" required>
+          </div>
+          <div class="mb-3">
+            <label for="phone" class="form-label">Contact Number</label>
+            <input type="tel" class="form-control" id="phone" required>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button type="submit" class="btn btn-primary">Confirm</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+        <!-- Orders Modal -->
+        <div class="modal fade" id="ordersModal" tabindex="-1" aria-labelledby="ordersModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title" id="ordersModalLabel">My Order History</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <!-- Order Status Tabs -->
+                <ul class="nav nav-tabs mb-3" id="ordersTab" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active" id="all-tab" data-bs-toggle="tab" data-bs-target="#all" type="button" role="tab">All Orders</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="pending-tab" data-bs-toggle="tab" data-bs-target="#pending" type="button" role="tab">To Prepare</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="delivered-tab" data-bs-toggle="tab" data-bs-target="#delivered" type="button" role="tab">Completed</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="cancelled-tab" data-bs-toggle="tab" data-bs-target="#cancelled" type="button" role="tab">Cancelled</button>
+                    </li>
+                </ul>
+                
+                <!-- Search Box -->
+                <div class="input-group mb-3">
+                    <input type="text" id="order-search" class="form-control" placeholder="Search by order number...">
+                    <button class="btn btn-outline-primary" type="button" id="search-orders-btn">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </div>
+                
+                <!-- Tab Content -->
+                <div class="tab-content" id="ordersTabContent">
+                    <div class="tab-pane fade show active" id="all" role="tabpanel">
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>Order #</th>
+                                        <th>Date</th>
+                                        <th>Items</th>
+                                        <th>Total</th>
+                                        <th>Status</th>
+                                        <th>Type</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="all-orders-body">
+                                    <!-- All orders will load here -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    
+                    <div class="tab-pane fade" id="pending" role="tabpanel">
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>Order #</th>
+                                        <th>Date</th>
+                                        <th>Items</th>
+                                        <th>Total</th>
+                                        <th>Type</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="pending-orders-body">
+                                    <!-- Pending orders will load here -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    
+                    <div class="tab-pane fade" id="delivered" role="tabpanel">
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>Order #</th>
+                                        <th>Date</th>
+                                        <th>Items</th>
+                                        <th>Total</th>
+                                        <th>Type</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="delivered-orders-body">
+                                    <!-- Delivered orders will load here -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    
+                    <div class="tab-pane fade" id="cancelled" role="tabpanel">
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>Order #</th>
+                                        <th>Date</th>
+                                        <th>Items</th>
+                                        <th>Total</th>
+                                        <th>Type</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="cancelled-orders-body">
+                                    <!-- Cancelled orders will load here -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Order Details Modal -->
+<div class="modal fade" id="orderDetailsModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title">Order Details: <span id="order-details-number"></span></h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" id="order-details-body">
+                <!-- Order details will load here -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-danger" id="cancel-order-btn">Cancel Order</button>
+                <button type="button" class="btn btn-primary" id="reorder-btn">Reorder</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+        <div id="sidebar-overlay" style="display:none;position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(0,0,0,0.2);z-index:899;"></div>
 
         <!-- JS File Link -->
         <script src="../assets/js/googleSignIn.js"></script>

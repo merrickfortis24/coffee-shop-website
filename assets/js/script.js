@@ -124,25 +124,45 @@ document.getElementById('pickup-btn').onclick = function() {
 };
 document.getElementById('delivery-btn').onclick = function() {
     document.getElementById('checkout-modal').style.display = 'none';
-    proceedCheckout('delivery');
+    var deliveryModal = new bootstrap.Modal(document.getElementById('deliveryAddressModal'));
+    deliveryModal.show();
 };
 document.getElementById('close-modal').onclick = function() {
     document.getElementById('checkout-modal').style.display = 'none';
 };
 
+// Handle delivery form submission
+document.getElementById('delivery-form').onsubmit = function(e) {
+    e.preventDefault();
+    const deliveryAddress = {
+        street: document.getElementById('street').value,
+        barangay: document.getElementById('barangay').value,
+        city: document.getElementById('city').value,
+        phone: document.getElementById('phone').value
+    };
+    // Hide modal
+    var deliveryModalEl = document.getElementById('deliveryAddressModal');
+    var modalInstance = bootstrap.Modal.getInstance(deliveryModalEl);
+    modalInstance.hide();
+    proceedCheckout('delivery', deliveryAddress);
+};
+
 // Call this from your modal buttons, passing 'pickup' or 'delivery'
-function proceedCheckout(orderType) {
+function proceedCheckout(orderType, deliveryAddress = null) {
     const payMethod = $('input[name="pay_method"]:checked').val();
     const invoiceNumber = 'INV' + Date.now();
-    const orderDetails = cart.map(item => ({
-        title: item.Product_name, // match your PHP
-        price: parseFloat(item.Price),
-        quantity: item.quantity,
-        subtotal_amount: parseFloat(item.Price) * item.quantity,
+    const orderDetails = {
+        items: cart.map(item => ({
+            title: item.Product_name,
+            price: parseFloat(item.Price),
+            quantity: item.quantity,
+            subtotal_amount: parseFloat(item.Price) * item.quantity
+        })),
         invoice_number: invoiceNumber,
         pay_method: payMethod,
-        order_type: orderType // this will be 'pickup' or 'delivery'
-    }));
+        order_type: orderType,
+        delivery_address: deliveryAddress
+    };
 
     fetch('add_to_database.php', {
         method: 'POST',
@@ -157,6 +177,7 @@ function proceedCheckout(orderType) {
     })
     .catch(err => {
         alert('There was an error placing your order.');
+        console.error(err);
     });
 }
 
@@ -255,9 +276,12 @@ function updateTotal() {
         var quantity = quantityElement.value;
         total = total + (price * quantity);
     }
-        total = Math.round(total * 100) / 100;
-        
-        document.getElementsByClassName("total-price")[0].innerText = "₱" + total;
+    total = Math.round(total * 100) / 100;
+    document.getElementsByClassName("total-price")[0].innerText = "₱" + total;
+
+    // Add this at the end
+    const cartUpdatedEvent = new Event('cartUpdated');
+    document.dispatchEvent(cartUpdatedEvent);
 }
 
 // Update Cart Badge
@@ -288,3 +312,408 @@ function loadUserOrders() {
             ordersList.innerHTML = '<div class="text-center text-danger">Failed to load orders</div>';
         });
 }
+
+document.getElementById('my-orders-link').addEventListener('click', function(e) {
+    e.preventDefault();
+    fetchOrders();
+    
+    // Add a small delay to ensure content is loaded before showing modal
+    setTimeout(() => {
+        const ordersModal = new bootstrap.Modal(document.getElementById('ordersModal'));
+        ordersModal.show();
+    }, 50);
+});
+
+// Add this function to your script.js
+function getStatusClass(status) {
+    if (status === null || status === undefined) return 'bg-secondary';
+    if (typeof status !== 'string') status = String(status);
+    status = status.toLowerCase();
+    switch(status) {
+        case 'pending': 
+            return 'bg-warning text-dark';
+        case 'delivered': 
+            return 'bg-success';
+        case 'cancelled': 
+            return 'bg-danger';
+        default: 
+            return 'bg-secondary';
+    }
+}
+
+// Add this function as well
+function getProgress(status) {
+    if (!status) return 0;
+    
+    status = status.toLowerCase();
+    switch(status) {
+        case 'pending': return 25;
+        case 'preparing': return 50;
+        case 'ready': return 75;
+        case 'completed': return 100;
+        default: return 0;
+    }
+}
+
+// Now the orders functions
+function fetchOrders(status = 'all', search = '') {
+    const url = `orders.php?status=${status}&search=${encodeURIComponent(search)}`;
+    
+    fetch(url)
+        .then(response => {
+            if (!response.ok) throw new Error('Network response was not ok');
+            return response.json();
+        })
+        .then(orders => {
+            const containerId = `${status}-orders-body`;
+            const container = document.getElementById(containerId);
+            
+            if (container) {
+                renderOrders(orders, containerId);
+                
+                if(status === 'all') {
+                    ['pending', 'delivered', 'cancelled'].forEach(s => {
+                        const sContainer = document.getElementById(`${s}-orders-body`);
+                        if (sContainer) {
+                            const filtered = orders.filter(order => order.status === s);
+                            renderOrders(filtered, `${s}-orders-body`);
+                        }
+                    });
+                }
+            }
+        })
+        .catch(error => {
+            console.error('Fetch error:', error);
+            const container = document.getElementById(`${status}-orders-body`);
+            if (container) {
+                container.innerHTML = `
+                    <tr>
+                        <td colspan="7" class="text-center text-danger">
+                            Failed to load orders. Please try again.
+                        </td>
+                    </tr>
+                `;
+            }
+        });
+}
+
+function renderOrders(orders, containerId) {
+    const container = document.getElementById(containerId);
+
+    // Check if container exists
+    if (!container) {
+        console.error(`Container ${containerId} not found!`);
+        return;
+    }
+
+    if (!orders || orders.length === 0) {
+        container.innerHTML = `
+            <tr>
+                <td colspan="7" class="text-center text-muted">
+                    No orders found
+                </td>
+            </tr>
+        `;
+        return;
+    }
+
+    let html = '';
+    orders.forEach(order => {
+        const date = new Date(order.date).toLocaleString();
+        const itemCount = order.items.length;
+        const statusClass = getStatusClass(order.status);
+
+        html += `
+            <tr class="order-row" data-invoice="${order.invoice}">
+                <td>${order.invoice}</td>
+                <td>${date}</td>
+                <td>${itemCount} item${itemCount > 1 ? 's' : ''}</td>
+                <td>₱${order.total.toFixed(2)}</td>
+                <td><span class="badge ${statusClass}">${order.status}</span></td>
+                <td>${order.type}</td>
+                <td>
+                    <button class="btn btn-sm btn-outline-primary view-order-details">
+                        <i class="fas fa-eye"></i> Details
+                    </button>
+                </td>
+            </tr>
+        `;
+    });
+
+    container.innerHTML = html;
+
+    // Remove any previous event listeners to avoid stacking
+    const newContainer = document.getElementById(containerId);
+    const viewDetailButtons = newContainer.getElementsByClassName('view-order-details');
+    for (let button of viewDetailButtons) {
+        button.addEventListener('click', function() {
+            const invoice = this.closest('.order-row').dataset.invoice;
+            viewOrderDetails(invoice);
+        });
+    }
+}
+
+function viewOrderDetails(invoice) {
+    const detailsNumber = document.getElementById('order-details-number');
+    const detailsBody = document.getElementById('order-details-body');
+
+    if (!detailsNumber || !detailsBody) {
+        console.error('Order details elements not found');
+        return;
+    }
+
+    fetch(`order_details.php?invoice=${encodeURIComponent(invoice)}`)
+        .then(response => response.json())
+        .then(order => {
+            if (order.error) {
+                alert(order.error);
+                return;
+            }
+
+            detailsNumber.textContent = order.invoice;
+
+            let itemsHtml = '';
+            if (order.items && Array.isArray(order.items)) {
+                order.items.forEach(item => {
+                    itemsHtml += `
+                        <div class="d-flex justify-content-between border-bottom pb-2 mb-2">
+                            <div>
+                                <h6>${item.title}</h6>
+                                <div class="text-muted">${item.quantity} × ₱${parseFloat(item.price).toFixed(2)}</div>
+                            </div>
+                            <div class="fw-bold">₱${parseFloat(item.subtotal).toFixed(2)}</div>
+                        </div>
+                    `;
+                });
+            }
+
+            // Status display (updated for timeline)
+            const statusHtml = `
+                <p><strong>Status:</strong> <span class="badge ${getStatusClass(order.status)}">${order.status}</span></p>
+            `;
+
+            const detailsHtml = `
+                <div class="row">
+                    <div class="col-md-6">
+                        <h5>Order Summary</h5>
+                        <div class="card">
+                            <div class="card-body">
+                                ${itemsHtml}
+                                <div class="d-flex justify-content-between mt-3 fw-bold">
+                                    <div>Total:</div>
+                                    <div>₱${order.total ? parseFloat(order.total).toFixed(2) : '0.00'}</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <h5 class="mt-4">Payment Information</h5>
+                        <div class="card">
+                            <div class="card-body">
+                                <p><strong>Method:</strong> ${order.payment_method || ''}</p>
+                                ${statusHtml}
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6">
+                        <h5>${order.type === 'delivery' ? 'Delivery' : 'Pickup'} Information</h5>
+                        <div class="card">
+                            <div class="card-body">
+                                <p><strong>Type:</strong> ${order.type || ''}</p>
+                                ${order.type === 'delivery' && order.delivery_address ? `
+                                    <p><strong>Address:</strong> 
+                                        ${order.delivery_address.street || ''}, 
+                                        ${order.delivery_address.barangay || ''}, 
+                                        ${order.delivery_address.city || ''}
+                                    </p>
+                                    <p><strong>Contact:</strong> ${order.delivery_address.phone || ''}</p>
+                                ` : '<p>Pickup at store</p>'}
+                                <p><strong>Date:</strong> ${order.date ? new Date(order.date).toLocaleString() : ''}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            detailsBody.innerHTML = detailsHtml;
+
+            // Show buttons based on status
+            const cancelBtn = document.getElementById('cancel-order-btn');
+            if (cancelBtn) {
+                cancelBtn.style.display = order.status === 'pending' ? 'inline-block' : 'none';
+            }
+            const reorderBtn = document.getElementById('reorder-btn');
+            if (reorderBtn) {
+                reorderBtn.style.display = 'inline-block';
+                reorderBtn.dataset.invoice = order.invoice;
+            }
+
+            // Show modal
+            const detailsModalEl = document.getElementById('orderDetailsModal');
+            if (detailsModalEl) {
+                const detailsModal = new bootstrap.Modal(detailsModalEl);
+                detailsModal.show();
+            }
+        })
+        .catch(error => {
+            console.error('Error loading order details:', error);
+            alert('Failed to load order details. Please try again.');
+        });
+}
+
+function initOrders() {
+    const ordersLink = document.getElementById('my-orders-link');
+    const searchBtn = document.getElementById('search-orders-btn');
+    const reorderBtn = document.getElementById('reorder-btn');
+
+    if (!ordersLink) return;
+
+    ordersLink.addEventListener('click', function(e) {
+        e.preventDefault();
+        fetchOrders('all');
+
+        const ordersModalEl = document.getElementById('ordersModal');
+        if (ordersModalEl) {
+            const ordersModal = new bootstrap.Modal(ordersModalEl);
+            ordersModal.show();
+        }
+    });
+
+    if (searchBtn) {
+        searchBtn.addEventListener('click', function() {
+            const searchInput = document.getElementById('order-search');
+            if (searchInput) {
+                fetchOrders('all', searchInput.value);
+            }
+        });
+    }
+
+    if (reorderBtn) {
+        reorderBtn.addEventListener('click', function() {
+            const invoice = this.dataset.invoice;
+            if (!invoice) return;
+
+            fetch(`order_details.php?invoice=${encodeURIComponent(invoice)}`)
+                .then(response => response.json())
+                .then(order => {
+                    if (!order || !order.items) return;
+                    // Clear current cart
+                    cart = [];
+
+                    // Add all items from order to cart
+                    order.items.forEach(item => {
+                        cart.push({
+                            title: item.title,
+                            price: item.price,
+                            productImg: '', // You might need to adjust this
+                            quantity: item.quantity
+                        });
+                    });
+
+                    // Update cart display
+                    renderCart();
+                    alert('Items from this order have been added to your cart!');
+
+                    // Close modal
+                    const detailsModalEl = document.getElementById('orderDetailsModal');
+                    if (detailsModalEl) {
+                        const detailsModal = bootstrap.Modal.getInstance(detailsModalEl);
+                        if (detailsModal) detailsModal.hide();
+                    }
+                });
+        });
+    }
+
+    // Tab switching
+    document.querySelectorAll('#ordersTab button').forEach(tab => {
+        tab.addEventListener('click', function() {
+            const status = this.id.replace('-tab', '');
+            if (status !== 'all') {
+                fetchOrders(status);
+            }
+        });
+    });
+}
+
+// Payment instructions
+function setupPaymentInstructions() {
+    const paymentRadios = document.querySelectorAll('input[name="pay_method"]');
+    const paymentInstructions = document.getElementById('payment-instructions');
+    const instructionsContent = document.getElementById('instructions-content');
+
+    function updatePaymentInstructions() {
+        const selected = document.querySelector('input[name="pay_method"]:checked');
+        if (!selected) {
+            paymentInstructions.style.display = 'none';
+            return;
+        }
+
+        if (selected.value === 'GCash') {
+            instructionsContent.innerHTML = `
+                <h5 class="card-title">GCash Payment Instructions</h5>
+                <p class="card-text">Please send payment to:</p>
+                <ul class="list-group list-group-flush mb-3">
+                    <li class="list-group-item"><strong>Account Name:</strong> KapeTann Coffee Shop</li>
+                    <li class="list-group-item"><strong>Account Number:</strong> 0917-134-1422</li>
+                    <li class="list-group-item"><strong>Amount:</strong> ₱<span class="total-price">0</span></li>
+                    <li class="list-group-item"><strong>Reference:</strong> Use your Order ID</li>
+                </ul>
+                <p class="text-muted">After payment, please keep the transaction receipt as proof.</p>
+            `;
+            paymentInstructions.style.display = 'block';
+        } else if (selected.value === 'Credit Card') {
+            instructionsContent.innerHTML = `
+                <h5 class="card-title">Credit Card Payment</h5>
+                <p class="card-text">You'll be redirected to our secure payment gateway.</p>
+                <ul class="list-group list-group-flush mb-3">
+                    <li class="list-group-item">Please have your card details ready</li>
+                    <li class="list-group-item">We accept Visa, Mastercard, and AMEX</li>
+                    <li class="list-group-item">Amount: ₱<span class="total-price">0</span></li>
+                </ul>
+                <p class="text-muted">Your card will be charged immediately upon confirmation.</p>
+            `;
+            paymentInstructions.style.display = 'block';
+        } else {
+            paymentInstructions.style.display = 'none';
+        }
+        
+        // Update total price in instructions
+        const totalElements = document.querySelectorAll('#instructions-content .total-price');
+        const totalPrice = document.querySelector('.total-price') ? document.querySelector('.total-price').innerText : '0';
+        totalElements.forEach(el => {
+            el.textContent = totalPrice.replace('₱', '');
+        });
+    }
+
+    paymentRadios.forEach(radio => {
+        radio.addEventListener('change', updatePaymentInstructions);
+    });
+
+    // Initialize on page load
+    updatePaymentInstructions();
+}
+
+// Add this function to map status numbers to text
+function mapStatus(statusCode) {
+    const statusMap = {
+        0: 'pending',
+        1: 'delivered'
+    };
+    return statusMap[statusCode] || 'unknown';
+}
+
+    // Initialize when page loads
+document.addEventListener('DOMContentLoaded', function() {
+    // Initialize orders system
+    if (document.getElementById('ordersModal')) {
+        initOrders();
+    }
+    
+    // Initialize cart and other systems
+    if (document.querySelector('.cart-content')) {
+        ready();
+    }
+    
+    // Initialize payment instructions
+    setupPaymentInstructions();
+});

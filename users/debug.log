@@ -156,3 +156,338 @@ Array
         )
 
 )
+Array
+(
+    [0] => Array
+        (
+            [title] => Kevx
+            [price] => 150
+            [quantity] => 1
+            [subtotal_amount] => 150
+            [invoice_number] => INV1749857572648
+            [pay_method] => GCash
+            [order_type] => pickup
+        )
+
+    [1] => Array
+        (
+            [title] => ytm
+            [price] => 67
+            [quantity] => 1
+            [subtotal_amount] => 67
+            [invoice_number] => INV1749857572648
+            [pay_method] => GCash
+            [order_type] => pickup
+        )
+
+)
+Array
+(
+    [0] => Array
+        (
+            [title] => ytm
+            [price] => 67
+            [quantity] => 2
+            [subtotal_amount] => 134
+            [invoice_number] => INV1749958421539
+            [pay_method] => Credit Card
+            [order_type] => delivery
+        )
+
+)
+Array
+(
+    [0] => Array
+        (
+            [title] => ubhuhb
+            [price] => 90
+            [quantity] => 1
+            [subtotal_amount] => 90
+            [invoice_number] => INV1749958793996
+            [pay_method] => Credit Card
+            [order_type] => delivery
+        )
+
+)
+Array
+(
+    [items] => Array
+        (
+            [0] => Array
+                (
+                    [title] => ytm
+                    [price] => 67
+                    [quantity] => 3
+                    [subtotal_amount] => 201
+                )
+
+        )
+
+    [invoice_number] => INV1749958876428
+    [pay_method] => Cash on Delivery
+    [order_type] => delivery
+    [delivery_address] => Array
+        (
+            [street] => POBLACION, CONCEPCION, ROMBLON
+            [barangay] => Inos
+            [city] => Lipa City
+            [phone] => 09940780881
+        )
+
+)
+Array
+(
+    [items] => Array
+        (
+            [0] => Array
+                (
+                    [title] => ubhuhb
+                    [price] => 90
+                    [quantity] => 3
+                    [subtotal_amount] => 270
+                )
+
+        )
+
+    [invoice_number] => INV1749959363106
+    [pay_method] => Cash on Delivery
+    [order_type] => delivery
+    [delivery_address] => Array
+        (
+            [street] => POBLACION, CONCEPCION, ROMBLON
+            [barangay] => Inos
+            [city] => Lipa City
+            [phone] => 09940780881
+        )
+
+)
+Array
+(
+    [items] => Array
+        (
+            [0] => Array
+                (
+                    [title] => ubhuhb
+                    [price] => 90
+                    [quantity] => 1
+                    [subtotal_amount] => 90
+                )
+
+        )
+
+    [invoice_number] => INV1749959418924
+    [pay_method] => Cash on Delivery
+    [order_type] => delivery
+    [delivery_address] => Array
+        (
+            [street] => POBLACION, CONCEPCION, ROMBLON
+            [barangay] => Inos
+            [city] => Lipa City
+            [phone] => 09940780881
+        )
+
+)
+Array
+(
+    [items] => Array
+        (
+            [0] => Array
+                (
+                    [title] => ytm
+                    [price] => 67
+                    [quantity] => 2
+                    [subtotal_amount] => 134
+                )
+
+        )
+
+    [invoice_number] => INV1749959596614
+    [pay_method] => GCash
+    [order_type] => delivery
+    [delivery_address] => Array
+        (
+            [street] => POBLACION, CONCEPCION, ROMBLON
+            [barangay] => Inos
+            [city] => Lipa City
+            [phone] => 09940780881
+        )
+
+)
+Array
+(
+    [items] => Array
+        (
+            [0] => Array
+                (
+                    [title] => Kevx
+                    [price] => 150
+                    [quantity] => 1
+                    [subtotal_amount] => 150
+                )
+
+        )
+
+    [invoice_number] => INV1749971028284
+    [pay_method] => GCash
+    [order_type] => delivery
+    [delivery_address] => Array
+        (
+            [street] => lipa
+            [barangay] => romblon
+            [city] => city
+            [phone] => 12345
+        )
+
+)
+Array
+(
+    [items] => Array
+        (
+            [0] => Array
+                (
+                    [title] => ytm
+                    [price] => 67
+                    [quantity] => 2
+                    [subtotal_amount] => 134
+                )
+
+        )
+
+    [invoice_number] => INV1749975253132
+    [pay_method] => GCash
+    [order_type] => pickup
+    [delivery_address] => 
+)
+Array
+(
+    [items] => Array
+        (
+            [0] => Array
+                (
+                    [title] => ytm
+                    [price] => 67
+                    [quantity] => 3
+                    [subtotal_amount] => 201
+                )
+
+        )
+
+    [invoice_number] => INV1749976981503
+    [pay_method] => Credit Card
+    [order_type] => pickup
+    [delivery_address] => 
+)
+Array
+(
+    [items] => Array
+        (
+            [0] => Array
+                (
+                    [title] => ytm
+                    [price] => 67
+                    [quantity] => 2
+                    [subtotal_amount] => 134
+                )
+
+        )
+
+    [invoice_number] => INV1749977808539
+    [pay_method] => GCash
+    [order_type] => pickup
+    [delivery_address] => 
+)
+Array
+(
+    [items] => Array
+        (
+            [0] => Array
+                (
+                    [title] => ubhuhb
+                    [price] => 90
+                    [quantity] => 2
+                    [subtotal_amount] => 180
+                )
+
+        )
+
+    [invoice_number] => INV1749978252937
+    [pay_method] => GCash
+    [order_type] => pickup
+    [delivery_address] => 
+)
+Array
+(
+    [items] => Array
+        (
+            [0] => Array
+                (
+                    [title] => Kevx
+                    [price] => 150
+                    [quantity] => 2
+                    [subtotal_amount] => 300
+                )
+
+        )
+
+    [invoice_number] => INV1749978822414
+    [pay_method] => Cash on Delivery
+    [order_type] => pickup
+    [delivery_address] => 
+)
+Array
+(
+    [items] => Array
+        (
+            [0] => Array
+                (
+                    [title] => ytm
+                    [price] => 67
+                    [quantity] => 1
+                    [subtotal_amount] => 67
+                )
+
+        )
+
+    [invoice_number] => INV1749979192416
+    [pay_method] => Cash on Delivery
+    [order_type] => pickup
+    [delivery_address] => 
+)
+Array
+(
+    [items] => Array
+        (
+            [0] => Array
+                (
+                    [title] => ytm
+                    [price] => 67
+                    [quantity] => 2
+                    [subtotal_amount] => 134
+                )
+
+        )
+
+    [invoice_number] => INV1749980361829
+    [pay_method] => Cash on Delivery
+    [order_type] => pickup
+    [delivery_address] => 
+)
+Array
+(
+    [items] => Array
+        (
+            [0] => Array
+                (
+                    [title] => Kevx
+                    [price] => 150
+                    [quantity] => 2
+                    [subtotal_amount] => 300
+                )
+
+        )
+
+    [invoice_number] => INV1749981219539
+    [pay_method] => GCash
+    [order_type] => pickup
+    [delivery_address] => 
+)

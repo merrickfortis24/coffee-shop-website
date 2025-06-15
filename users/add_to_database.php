@@ -40,18 +40,32 @@ $stmt = $con->prepare("INSERT INTO orders
     (title, price, quantity, subtotal_amount, date, invoice_number, user_id, pay_method, order_type, order_status, pay_status)
     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 'Pending', 'Unpaid')");
 
-foreach ($orderDetails as $order) {
+foreach ($orderDetails['items'] as $order) {
     $title = $order['title'];
     $price = floatval($order['price']);
     $quantity = intval($order['quantity']);
     $subtotal = floatval($order['subtotal_amount']);
-    $invoice = $order['invoice_number'];
-    $pay_method = $order['pay_method'] ?? '';
-    $order_type = $order['order_type'];
+    $invoice = $orderDetails['invoice_number'];
+    $pay_method = $orderDetails['pay_method'] ?? '';
+    $order_type = $orderDetails['order_type'];
+
+    // Get delivery address if order_type is delivery
+    $street = $barangay = $city = $phone = null;
+    if ($order_type === 'delivery' && isset($orderDetails['delivery_address'])) {
+        $street = $orderDetails['delivery_address']['street'] ?? null;
+        $barangay = $orderDetails['delivery_address']['barangay'] ?? null;
+        $city = $orderDetails['delivery_address']['city'] ?? null;
+        $phone = $orderDetails['delivery_address']['phone'] ?? null;
+    }
+
+    $stmt = $con->prepare("INSERT INTO orders 
+        (title, price, quantity, subtotal_amount, date, invoice_number, user_id, pay_method, order_type, order_status, pay_status, street, barangay, city, phone)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 'Pending', 'Unpaid', ?, ?, ?, ?)");
 
     $stmt->bind_param(
-        "sddississ", // string, double, double, integer, string, string, integer, string, string
-        $title, $price, $quantity, $subtotal, $date, $invoice, $user_id, $pay_method, $order_type
+        "sddississssss",
+        $title, $price, $quantity, $subtotal, $date, $invoice, $user_id, $pay_method, $order_type,
+        $street, $barangay, $city, $phone
     );
 
     if (!$stmt->execute()) {

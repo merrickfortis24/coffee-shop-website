@@ -324,3 +324,32 @@
     max-height: 90vh;
     overflow-y: auto;
 }
+
+.order-details-table {
+    width: 100%;
+    max-width: 100%;
+    margin: 0 auto;
+}
+
+.order-details-table th, .order-details-table td {
+    word-break: break-word;
+    white-space: normal;
+}
+
+.order-details-modal, .modal-content {
+    width: 90vw;
+    max-width: 1200px;
+    min-width: 800px;
+    padding: 16px;
+}
+
+.order-details-modal .container {
+    width: 100%;
+    margin: 0 auto;
+    /* Remove flex centering */
+    /* display: flex;
+    justify-content: center;
+    align-items: center; */
+    padding: 0;
+    box-sizing: border-box;
+}

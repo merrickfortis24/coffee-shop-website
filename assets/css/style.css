@@ -947,3 +947,142 @@ section {
 .profile-nav .nav-link i {
     font-size: 1.1rem;
 }
+
+/* Add at the end of your CSS file or in a relevant section */
+.order-details-table {
+    table-layout: fixed;
+    width: 100%;
+}
+
+.order-details-table td,
+.order-details-table th {
+    vertical-align: top;
+    word-break: break-word;
+}
+
+.order-details-table td:nth-child(6) { /* Address column */
+    max-width: 200px;
+    white-space: pre-line;
+}
+
+.order-details-table td:nth-child(7) { /* Phone Number column */
+    white-space: nowrap;
+    min-width: 120px;
+}
+
+#payment-instructions {
+    background-color: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-radius: 0.25rem;
+    padding: 1rem;
+    margin-top: 1rem;
+    transition: all 0.3s ease;
+    margin-top: 15px;
+}
+
+#payment-instructions .card {
+    border-width: 2px;
+}
+
+#payment-instructions .card-header {
+    font-weight: bold;
+    font-size: 1.1rem;
+}
+
+#payment-instructions .card-body {
+    padding: 1.25rem;
+}
+
+#payment-instructions ul.list-group {
+    border-radius: 0.25rem;
+    margin-top: 10px;
+    margin-bottom: 15px;
+}
+
+#payment-instructions .list-group-item {
+    padding: 0.75rem 1.25rem;
+    border: 1px solid rgba(0,0,0,.125);
+}
+
+#instructions-content h4 {
+    font-size: 1.2rem;
+    margin-bottom: 0.5rem;
+    color: var(--main-color);
+}
+
+#instructions-content p {
+    margin-bottom: 0.3rem;
+    font-size: 0.9rem;
+}
+
+/* Orders Page Styling */
+#ordersTab .nav-link {
+    font-weight: 600;
+    color: #6c757d;
+}
+
+#ordersTab .nav-link.active {
+    color: var(--main-color);
+    border-bottom: 3px solid var(--main-color);
+}
+
+.order-row {
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.order-row:hover {
+    background-color: rgba(159, 92, 68, 0.05);
+}
+
+/* Timeline Styling */
+.timeline {
+    list-style: none;
+    padding: 0;
+    position: relative;
+}
+
+.timeline:before {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: #dee2e6;
+    left: 20px;
+    margin-left: -1.5px;
+}
+
+.timeline > li {
+    position: relative;
+    margin-bottom: 20px;
+    min-height: 40px;
+    padding-left: 50px;
+}
+
+.timeline > li:before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 40px;
+    height: 40px;
+    border: 2px solid #dee2e6;
+    border-radius: 50%;
+    background: #fff;
+}
+
+.timeline > li.completed:before {
+    background: #8B5C2A; /* Your brown color */
+    border-color: #8B5C2A;
+    content: '✓';
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+}
+
+.progress-bar {
+    background-color: #8B5C2A; /* Your brown color */
+}
