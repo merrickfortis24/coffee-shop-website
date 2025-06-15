@@ -3,7 +3,7 @@
     <head>
         <meta charset="utf-8"/>
         <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
-        <title>KapeTann | Login Form</title>
+        <title>Nai Tsa | Login Form</title>
         <link rel="stylesheet" href="../assets/css/login.css"/>
         <link rel="icon" type="image/x-icon" href="../assets/images/favicon.ico"><!-- Favicon / Icon -->
         <script src="https://accounts.google.com/gsi/client" async defer></script>

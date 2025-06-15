@@ -28,19 +28,15 @@ profileBtn.onclick = () => {
 closeProfileBtn.onclick = () => {
     profileSidebar.classList.remove('active');
     sidebarOverlay.style.display = 'none';
-
-    // Close all Bootstrap modals
-    closeAllModals();
+    closeAllModals();  // Ensure this is called
 };
 
 sidebarOverlay.onclick = () => {
     profileSidebar.classList.remove('active');
     cartItem.classList.remove('active');
     sidebarOverlay.style.display = 'none';
-
-    // Close all Bootstrap modals
-    closeAllModals();
-}
+    closeAllModals();  // Ensure this is called
+};
 
 // Toggle Profile Sidebar
 document.getElementById('profile-btn').onclick = function () {
@@ -496,7 +492,12 @@ function viewOrderDetails(invoice) {
 
             // Status display (updated for timeline)
             const statusHtml = `
-                <p><strong>Status:</strong> <span class="badge ${getStatusClass(order.status)}">${order.status}</span></p>
+                <p><strong>Status:</strong> 
+                    ${order.status === 0 ? '<span class="badge bg-warning">Pending</span>' : 
+                      order.status === 1 ? '<span class="badge bg-info">Processing</span>' : 
+                      order.status === 2 ? '<span class="badge bg-success">Delivered</span>' : 
+                      '<span class="badge bg-secondary">Unknown</span>'}
+                </p>
             `;
 
             const detailsHtml = `
@@ -597,17 +598,22 @@ function fetchUserOrders(status = 'to-pay') {
         });
 }
 
-// Update the getOrderStatusText function
+// Update the getOrderStatusText function to check order_status first
 function getOrderStatusText(order) {
-    if (order.pay_status === 0) {
-        return '<span class="badge bg-danger">To Pay</span>';
-    } else if (order.status === 0) {
-        return '<span class="badge bg-warning">To Ship</span>';
-    } else if (order.status === 1) {
-        return '<span class="badge bg-info">To Receive</span>';
-    } else if (order.status === 2) {
+    // Check delivery status first
+    if (order.status === 2) {
         return '<span class="badge bg-success">Delivered</span>';
+    } else if (order.status === 1) {
+        return '<span class="badge bg-info">Processing</span>';
     }
+    
+    // Then check payment status
+    if (order.pay_status === 0) {
+        return '<span class="badge bg-danger">Pending</span>';
+    } else if (order.status === 0) {
+        return '<span class="badge bg-warning">Pending</span>';
+    }
+    
     return '<span class="badge bg-secondary">Unknown</span>';
 }
 
@@ -800,6 +806,7 @@ function setupPaymentInstructions() {
 function mapStatus(statusCode) {
     const statusMap = {
         0: 'pending',
+        2: 'processing',
         1: 'delivered'
     };
     return statusMap[statusCode] || 'unknown';
@@ -819,13 +826,58 @@ document.addEventListener('DOMContentLoaded', function() {
     setupPaymentInstructions();
 });
 
-// Helper function to close all Bootstrap modals
+// Helper function to close all Bootstrap modals and remove backdrops
 function closeAllModals() {
-    const modals = document.querySelectorAll('.modal');
-    modals.forEach(modal => {
+    // Hide all Bootstrap modals
+    document.querySelectorAll('.modal').forEach(modal => {
         const modalInstance = bootstrap.Modal.getInstance(modal);
         if (modalInstance) {
             modalInstance.hide();
         }
     });
+
+    // Remove all modal backdrops
+    document.querySelectorAll('.modal-backdrop').forEach(backdrop => {
+        backdrop.remove();
+    });
+
+    // Reset body styling
+    document.body.classList.remove('modal-open');
+    document.body.style.paddingRight = '';
+    document.body.style.overflow = '';
 }
+
+// Add CSS to fix modal z-index issues
+const modalFixCSS = `
+    .modal-backdrop {
+        z-index: 1040 !important;
+    }
+    .modal {
+        z-index: 1050 !important;
+    }
+`;
+document.head.insertAdjacentHTML('beforeend', `<style>${modalFixCSS}</style>`);
+
+// Update your close handlers to always call closeAllModals
+closeProfileBtn.onclick = () => {
+    profileSidebar.classList.remove('active');
+    sidebarOverlay.style.display = 'none';
+    closeAllModals();  // Ensure this is called
+};
+
+sidebarOverlay.onclick = () => {
+    profileSidebar.classList.remove('active');
+    cartItem.classList.remove('active');
+    sidebarOverlay.style.display = 'none';
+    closeAllModals();  // Ensure this is called
+};
+
+// Also add this to handle when modal close button is clicked
+document.addEventListener('click', function(e) {
+    if (
+        e.target.classList.contains('btn-close') ||
+        (e.target.classList.contains('btn-secondary') && e.target.closest('.modal-footer'))
+    ) {
+        closeAllModals();
+    }
+});

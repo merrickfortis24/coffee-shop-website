@@ -180,7 +180,7 @@
         <!-- HERO SECTION -->
         <section class="home" id="home">
             <div class="content">
-                <h3>Welcome to KapeTann Coffee Shop, <?php echo $_SESSION['username']; ?>!</h3>
+                <h3>Welcome to Nai Tsa Food Hub, <?php echo $_SESSION['username']; ?>!</h3>
                 <p>
                     <strong>We are open 4:00 PM to 9:00 PM.</strong>
                 </p>
@@ -196,21 +196,12 @@
                     <img src="../assets/images/about-img.png" alt="" class="img-fluid">
                 </div>
                 <div class="content">
-                    <h3>Welcome to KapeTann!</h3>
+                    <h3>Welcome to Nai Tsa!</h3>
                     <p>
-                        At KapeTann Coffee Shop, we are passionate about coffee and believe
-                        that every cup tells a story. We are a cozy coffee shop located
-                        in the heart of the city, dedicated to providing an exceptional
-                        coffee experience to our customers. Our love for coffee has led
-                        us on a voyage of exploration and discovery, as we travel the
-                        world in search of the finest coffee beans, carefully roasted
-                        and brewed to perfection.
+                        At Nai Tsa, we’re passionate about blending fun, flavor, and creativity into every sip and bite. Located in the heart of the city, we’re a vibrant hub dedicated to serving delicious bubble tea, refreshing drinks, and mouthwatering food that brings people together. Our journey began with a love for bold flavors and innovative recipes, inspiring us to craft unique drinks with the freshest ingredients, chewy boba pearls, and endless customization.
                     </p>
                     <p>
-                        But coffee is not just a drink, it's an experience. Our warm and
-                        inviting atmosphere at KapeTann is designed to be a haven
-                        for coffee lovers, where they can relax, connect, and embark
-                        on their own coffee voyages.
+                        But Nai Tsa is more than just a drink or a meal, it’s an experience. Our lively and welcoming space is designed to be a go-to spot for friends, families, and bubble tea enthusiasts to unwind, share laughs, and explore a world of flavors. Whether you’re craving a classic milk tea, a fruity explosion, or a savory snack, every visit is a chance to taste happiness in every bubble!
                     </p>
                     <a href="#" class="btn btn-dark text-decoration-none">Learn More</a>
                 </div>
@@ -306,23 +297,6 @@
                         <div class="col-md-4">
                             <div class="box">
                                 <div class="image">
-                                    <img src="../assets/images/gallery4.jpg" alt="">
-                                </div>
-                                <div class="content">
-                                    <div class="stars">
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star-half-alt"></i>
-                                    </div>
-                                    <h3 class="gallery-title">Picture 4</h3>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="box">
-                                <div class="image">
                                     <img src="../assets/images/gallery5.jpg" alt="">
                                 </div>
                                 <div class="content">
@@ -334,6 +308,23 @@
                                         <i class="fas fa-star-half-alt"></i>
                                     </div>
                                     <h3 class="gallery-title">Picture 5</h3>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="box">
+                                <div class="image">
+                                    <img src="../assets/images/gallery6.jpg" alt="">
+                                </div>
+                                <div class="content">
+                                    <div class="stars">
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star-half-alt"></i>
+                                    </div>
+                                    <h3 class="gallery-title">Picture 6</h3>
                                 </div>
                             </div>
                         </div>
@@ -357,11 +348,11 @@
                                     <img src="../assets/images/pour.jpg" alt="">
                                 </div>
                                 <div class="content">
-                                    <a href="https://www.thewaytocoffee.com/batch-brew-vs-pour-over/" target="_blank" class="title text-decoration-none">Batch Brew vs. Pour Over | The Pros and Cons Experienced by Coffee Professionals</a>
-                                    <span>by The Way to Coffee</span>
-                                    <p>Thinking back 15-20 years, I remember my parents going about their morning ritual of brewing coffee on weekends before burying...</p>
+                                    <a href="https://www.facebook.com/share/1Bc1pZkk2U/" target="_blank" class="title text-decoration-none">Late-night hangout with your tropa or loved ones.</a>
+                                    <span>by Nai Tsa Food Hub team</span>
+                                    <p>We are now open until midnight so come enjoy late-night treats, cozy vibes, and unforgettable moments under the stars!</p>
                                     <center>
-                                        <a href="https://www.thewaytocoffee.com/batch-brew-vs-pour-over/" target="_blank" class="btn">Read More</a>
+                                        <a href="https://www.facebook.com/share/1Bc1pZkk2U/" target="_blank" class="btn">Read More</a>
                                     </center>
                                 </div>
                             </div>
@@ -369,14 +360,14 @@
                         <div class="col-md-4">
                             <div class="box">
                                 <div class="image">
-                                    <img src="../assets/images/carbon.webp" alt="">
+                                    <img src="../assets/images/barako.jpg" alt="">
                                 </div>
                                 <div class="content">
-                                    <a href="https://www.taylorsofharrogate.co.uk/news/carbon-neutral-tea-and-coffee" target="_blank" class="title text-decoration-none">Carbon Neutral Tea and Coffee</a>
-                                    <span>by Taylors editorial team</span>
-                                    <p>All our tea and coffee is carbon neutral – but what does that actually mean? Here’s an explanation of how we’ve lowered our carbon footprint, and the three projects in Kenya, Malawi and Uganda which have reduced the emissions of our products to...</p>
+                                    <a href="https://www.facebook.com/share/p/16qL9Vr6y3/" target="_blank" class="title text-decoration-none">We're a GrabFood 5-Star Eats Merchant</a>
+                                    <span>by GrabFood</span>
+                                    <p>Your go-to for refreshing bubble teas & delicious bites. Customizable drinks, quick service, satisfying cravings day or night!</p>
                                     <center>
-                                        <a href="https://www.taylorsofharrogate.co.uk/news/carbon-neutral-tea-and-coffee" target="_blank" class="btn">Read More</a>
+                                        <a href="https://www.facebook.com/share/p/16qL9Vr6y3/" target="_blank" class="btn">Read More</a>
                                     </center>
                                 </div>
                             </div>
@@ -387,11 +378,11 @@
                                     <img src="../assets/images/coffeemaker.jpg" alt="">
                                 </div>
                                 <div class="content">
-                                    <a href="https://coffeestylish.com/best-drip-coffee-makers/" target="_blank" class="title text-decoration-none">BEST DRIP COFFEE MAKERS 2020</a>
-                                    <span>by CoffeeStylish.com</span>
-                                    <p>What is a good coffee maker? A good home coffee maker should have removable parts so it can be cleaned completely because you don’t want mold or buildups in your machine. It should be fast. It...</p>
+                                    <a href="https://www.facebook.com/share/1ZyQgUrJRg/" target="_blank" class="title text-decoration-none">Meet Us at Barako Fest!</a>
+                                    <span>by Barako Fest</span>
+                                    <p>Experience rich coffee, hearty dishes, and vibrant vibes. Join the celebration of local flavors, community spirit, and unforgettable moments, see you there!</p>
                                     <center>
-                                        <a href="https://coffeestylish.com/best-drip-coffee-makers/" target="_blank" class="btn">Read More</a>
+                                        <a href="https://www.facebook.com/share/1ZyQgUrJRg/" target="_blank" class="btn">Read More</a>
                                     </center>
                                 </div>
                             </div>
@@ -471,7 +462,7 @@
             <h1 class="heading"><span>Contact</span> Us</h1>
             <div class="row">
                 <div id="map" class="map pull-left"></div>
-                <form name="contact" method="POST" action="https://formspree.io/f/xayzavgb">
+                <form name="contact" method="POST" action="https://formspree.io/f/xnnvvzvw">
                     <h3> Get in touch with us!</h3>
                     <div class="inputBox">
                         <span class="fas fa-envelope"></span>
@@ -491,11 +482,11 @@
                 <div class="logo">
                     <img src="../assets/images/logo.png" class="img"><br />
                     <i class="fas fa-envelope"></i>
-                    <p>abfiguerrez18@gmail.com</p><br />
+                    <p>naitsa@gmail.com</p><br />
                     <i class="fas fa-phone"></i>
-                    <p>+63 917-134-1422</p><br />
+                    <p>+63 994-078-0881</p><br />
                     <i class="fab fa-facebook-messenger"></i>
-                    <p>@kapetanncoffee</p><br />
+                    <p>@naitsafoodhub</p><br />
                 </div>
                 <div class="support">
                     <h2>Support</h2>
@@ -525,8 +516,8 @@
                 </div>
                 <div class="credit">
                     <hr /><br/>
-                    <h2>KapeTann Brewed Coffee © 2023 | All Rights Reserved.</h2>
-                    <h2>Designed by <span>Algo Filipino</span> | Teravision</h2>
+                    <h2>Nai Tsa Food Hub © 2025 | All Rights Reserved.</h2>
+                    <h2>Designed by <span>Kodigo ni Fortis</span> | BSIT</h2>
                 </div>
             </div>
         </section>

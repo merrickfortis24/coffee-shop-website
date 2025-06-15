@@ -555,3 +555,174 @@ Array
     [order_type] => pickup
     [delivery_address] => 
 )
+Array
+(
+    [items] => Array
+        (
+            [0] => Array
+                (
+                    [title] => ytm
+                    [price] => 67
+                    [quantity] => 3
+                    [subtotal_amount] => 201
+                )
+
+        )
+
+    [invoice_number] => INV1750003426613
+    [pay_method] => Cash on Delivery
+    [order_type] => pickup
+    [delivery_address] => 
+)
+Array
+(
+    [items] => Array
+        (
+            [0] => Array
+                (
+                    [title] => ytm
+                    [price] => 67
+                    [quantity] => 1
+                    [subtotal_amount] => 67
+                )
+
+        )
+
+    [invoice_number] => INV1750004385543
+    [pay_method] => Cash on Delivery
+    [order_type] => pickup
+    [delivery_address] => 
+)
+Array
+(
+    [items] => Array
+        (
+            [0] => Array
+                (
+                    [title] => ytm
+                    [price] => 67
+                    [quantity] => 1
+                    [subtotal_amount] => 67
+                )
+
+        )
+
+    [invoice_number] => INV1750004494358
+    [pay_method] => Cash on Delivery
+    [order_type] => pickup
+    [delivery_address] => 
+)
+Array
+(
+    [items] => Array
+        (
+            [0] => Array
+                (
+                    [title] => ytm
+                    [price] => 67
+                    [quantity] => 1
+                    [subtotal_amount] => 67
+                )
+
+        )
+
+    [invoice_number] => INV1750004630962
+    [pay_method] => Cash on Delivery
+    [order_type] => pickup
+    [delivery_address] => 
+)
+Array
+(
+    [items] => Array
+        (
+            [0] => Array
+                (
+                    [title] => ytm
+                    [price] => 67
+                    [quantity] => 2
+                    [subtotal_amount] => 134
+                )
+
+        )
+
+    [invoice_number] => INV1750005434005
+    [pay_method] => Cash on Delivery
+    [order_type] => pickup
+    [delivery_address] => 
+)
+Array
+(
+    [items] => Array
+        (
+            [0] => Array
+                (
+                    [title] => Kevx
+                    [price] => 150
+                    [quantity] => 1
+                    [subtotal_amount] => 150
+                )
+
+        )
+
+    [invoice_number] => INV1750005717040
+    [pay_method] => Credit Card
+    [order_type] => pickup
+    [delivery_address] => 
+)
+Array
+(
+    [items] => Array
+        (
+            [0] => Array
+                (
+                    [title] => ytm
+                    [price] => 67
+                    [quantity] => 2
+                    [subtotal_amount] => 134
+                )
+
+        )
+
+    [invoice_number] => INV1750007280096
+    [pay_method] => GCash
+    [order_type] => pickup
+    [delivery_address] => 
+)
+Array
+(
+    [items] => Array
+        (
+            [0] => Array
+                (
+                    [title] => ytm
+                    [price] => 67
+                    [quantity] => 2
+                    [subtotal_amount] => 134
+                )
+
+        )
+
+    [invoice_number] => INV1750008314278
+    [pay_method] => Cash on Delivery
+    [order_type] => pickup
+    [delivery_address] => 
+)
+Array
+(
+    [items] => Array
+        (
+            [0] => Array
+                (
+                    [title] => ytm
+                    [price] => 67
+                    [quantity] => 1
+                    [subtotal_amount] => 67
+                )
+
+        )
+
+    [invoice_number] => INV1750010467022
+    [pay_method] => Cash on Delivery
+    [order_type] => pickup
+    [delivery_address] => 
+)

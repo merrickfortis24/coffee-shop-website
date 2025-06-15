@@ -105,20 +105,22 @@ section {
 }
 
 .header .search-form {
+    display: none;
     position: absolute;
-    top: 115%;
-    right: 7%;
-    background-color: #fff;
-    width: 50rem;
-    height: 5rem;
-    display: flex;
+    top: 100%;
+    right: 2rem;
+    background: #fff;
+    border-radius: .5rem;
+    box-shadow: 0 .5rem 1rem rgba(0,0,0,.1);
+    padding: 1rem;
+    z-index: 1000;
+    flex-direction: row;
     align-items: center;
-    transform: scaleY(0);
-    transform-origin: top;
+    gap: 0.5rem;
 }
 
 .header .search-form.active {
-    transform: scaleY(1);
+    display: flex;
 }
 
 .header .search-form input {
@@ -1104,4 +1106,25 @@ section {
     background-color: #8B5C2A;
     color: white;
     border-radius: 4px;
+}
+
+#sidebar-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background-color: rgba(0,0,0,0.5);
+    z-index: 999;
+}
+
+#sidebar-overlay.hidden {
+    display: none !important;
+    pointer-events: none;
+}
+
+/* Add to your stylesheet */
+.modal-backdrop {
+    z-index: 1040 !important;
+}
+.modal {
+    z-index: 1050 !important;
 }

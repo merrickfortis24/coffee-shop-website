@@ -53,12 +53,12 @@ try {
 
     $user_id = $row['user_id'];
 
-    // Map status to user-friendly categories
+    // Map status to user-friendly categories (updated to match new values)
     $statusMap = [
-        'to-pay' => ['pay_status' => 0, 'order_status' => 0],
-        'to-ship' => ['pay_status' => 1, 'order_status' => 0],
-        'to-receive' => ['pay_status' => 1, 'order_status' => 1],
-        'delivered' => ['order_status' => 2] // Added delivered status
+        'to-pay'     => ['pay_status' => 0, 'order_status' => 0], // To Pay: unpaid, pending
+        'to-ship'    => ['pay_status' => 1, 'order_status' => 0], // To Ship: paid, pending
+        'to-receive' => ['pay_status' => 1, 'order_status' => 1], // To Receive: paid, processing
+        'delivered'  => ['order_status' => 2]                     // Delivered: delivered
     ];
 
     // Build query
