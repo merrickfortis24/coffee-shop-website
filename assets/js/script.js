@@ -28,12 +28,18 @@ profileBtn.onclick = () => {
 closeProfileBtn.onclick = () => {
     profileSidebar.classList.remove('active');
     sidebarOverlay.style.display = 'none';
-}
+
+    // Close all Bootstrap modals
+    closeAllModals();
+};
 
 sidebarOverlay.onclick = () => {
     profileSidebar.classList.remove('active');
-    cartSidebar.classList.remove('active');
+    cartItem.classList.remove('active');
     sidebarOverlay.style.display = 'none';
+
+    // Close all Bootstrap modals
+    closeAllModals();
 }
 
 // Toggle Profile Sidebar
@@ -48,6 +54,7 @@ document.getElementById('profile-btn').onclick = function () {
 };
 document.getElementById('close-profile-sidebar').onclick = function() {
     profileSidebar.classList.remove('active');
+    sidebarOverlay.style.display = 'none'; // <-- Add this line
 };
 
 // Show Search Textbox || Close Navbar & Cart Items
@@ -298,7 +305,8 @@ function updateCartBadge() {
 }
 
 document.getElementById('close-profile-sidebar').onclick = function() {
-    document.getElementById('profile-sidebar').classList.remove('active');
+    profileSidebar.classList.remove('active');
+    sidebarOverlay.style.display = 'none'; // <-- Add this line
 };
 
 function loadUserOrders() {
@@ -350,7 +358,6 @@ function getProgress(status) {
         case 'pending': return 25;
         case 'preparing': return 50;
         case 'ready': return 75;
-        case 'completed': return 100;
         default: return 0;
     }
 }
@@ -533,20 +540,15 @@ function viewOrderDetails(invoice) {
                         </div>
                     </div>
                 </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    ${order.status === 2 ? '<button type="button" class="btn btn-success" onclick="markAsDelivered(\'' + order.invoice + '\')">Mark as Delivered</button>' : ''}
+                    ${order.status === 0 ? '<button type="button" class="btn btn-danger" id="cancel-order-btn">Cancel Order</button>' : ''}
+                    <button type="button" class="btn btn-primary" id="reorder-btn">Reorder</button>
+                </div>
             `;
             
             detailsBody.innerHTML = detailsHtml;
-
-            // Show buttons based on status
-            const cancelBtn = document.getElementById('cancel-order-btn');
-            if (cancelBtn) {
-                cancelBtn.style.display = order.status === 'pending' ? 'inline-block' : 'none';
-            }
-            const reorderBtn = document.getElementById('reorder-btn');
-            if (reorderBtn) {
-                reorderBtn.style.display = 'inline-block';
-                reorderBtn.dataset.invoice = order.invoice;
-            }
 
             // Show modal
             const detailsModalEl = document.getElementById('orderDetailsModal');
@@ -561,79 +563,180 @@ function viewOrderDetails(invoice) {
         });
 }
 
+// Fetch and render user orders
+function fetchUserOrders(status = 'to-pay') {
+    const url = `orders.php?status=${status}`;
+    
+    fetch(url)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(data => {
+            // Check if we got an error response
+            if (data.error) {
+                throw new Error(`Server error: ${data.error}`);
+            }
+            renderUserOrders(data, `${status}-orders-body`);
+        })
+        .catch(error => {
+            console.error(`Error fetching ${status} orders:`, error);
+            const container = document.getElementById(`${status}-orders-body`);
+            if (container) {
+                container.innerHTML = `
+                    <tr>
+                        <td colspan="6" class="text-center text-danger">
+                            Failed to load orders. Please try again.<br>
+                            Error: ${error.message}
+                        </td>
+                    </tr>
+                `;
+            }
+        });
+}
+
+// Update the getOrderStatusText function
+function getOrderStatusText(order) {
+    if (order.pay_status === 0) {
+        return '<span class="badge bg-danger">To Pay</span>';
+    } else if (order.status === 0) {
+        return '<span class="badge bg-warning">To Ship</span>';
+    } else if (order.status === 1) {
+        return '<span class="badge bg-info">To Receive</span>';
+    } else if (order.status === 2) {
+        return '<span class="badge bg-success">Delivered</span>';
+    }
+    return '<span class="badge bg-secondary">Unknown</span>';
+}
+
+// Update the renderUserOrders function
+function renderUserOrders(orders, containerId) {
+    const container = document.getElementById(containerId);
+    if (!container) {
+        console.error(`Container ${containerId} not found`);
+        return;
+    }
+    
+    // Clear previous content
+    container.innerHTML = '';
+    
+    if (!orders || orders.length === 0) {
+        container.innerHTML = `
+            <tr>
+                <td colspan="6" class="text-center text-muted">
+                    No orders found
+                </td>
+            </tr>
+        `;
+        return;
+    }
+
+    let html = '';
+    orders.forEach(order => {
+        const date = new Date(order.date).toLocaleString();
+        const itemCount = order.items.length;
+        const statusText = getOrderStatusText(order);
+        
+        html += `
+            <tr class="order-row" data-invoice="${order.invoice}">
+                <td>${order.invoice}</td>
+                <td>${date}</td>
+                <td>${itemCount} item${itemCount > 1 ? 's' : ''}</td>
+                <td>₱${order.total.toFixed(2)}</td>
+                <td>${statusText}</td>
+                <td>
+                    <button class="btn btn-sm btn-outline-primary view-order-details">
+                        <i class="fas fa-eye"></i> Details
+                    </button>
+                </td>
+            </tr>
+        `;
+    });
+    
+    container.innerHTML = html;
+}
+
+// Add this function to initialize the tabs
+function initOrderTabs() {
+    // Set default tab to active
+    document.getElementById('to-pay-tab').classList.add('active');
+    document.getElementById('to-pay-orders').style.display = 'block';
+
+    // Add event listeners to tabs
+    document.getElementById('to-pay-tab').addEventListener('click', () => filterUserOrders('to-pay'));
+    document.getElementById('to-ship-tab').addEventListener('click', () => filterUserOrders('to-ship'));
+    document.getElementById('to-receive-tab').addEventListener('click', () => filterUserOrders('to-receive'));
+    document.getElementById('delivered-tab').addEventListener('click', () => filterUserOrders('delivered')); // Added delivered tab
+}
+
+// Update the filterUserOrders function
+function filterUserOrders(status) {
+    // Hide all order sections, including delivered
+    document.querySelectorAll('.order-section').forEach(section => {
+        section.style.display = 'none';
+    });
+
+    // Remove active class from all tabs, including delivered
+    document.querySelectorAll('.order-tab').forEach(tab => {
+        tab.classList.remove('active');
+    });
+
+    // Show selected section and activate tab (including delivered)
+    const section = document.getElementById(`${status}-orders`);
+    const tab = document.getElementById(`${status}-tab`);
+    if (section) section.style.display = 'block';
+    if (tab) tab.classList.add('active');
+
+    // Load orders for this status
+    fetchUserOrders(status);
+}
+
+// Update initOrders function to include tab initialization
 function initOrders() {
+    // Initialize tabs
+    initOrderTabs();
+
+    // Load orders when profile is opened
     const ordersLink = document.getElementById('my-orders-link');
-    const searchBtn = document.getElementById('search-orders-btn');
-    const reorderBtn = document.getElementById('reorder-btn');
+    if (ordersLink) {
+        ordersLink.addEventListener('click', function(e) {
+            e.preventDefault();
 
-    if (!ordersLink) return;
+            // Load initial orders
+            fetchUserOrders('to-pay');
 
-    ordersLink.addEventListener('click', function(e) {
-        e.preventDefault();
-        fetchOrders('all');
+            // Show orders modal
+            const ordersModalEl = document.getElementById('ordersModal');
+            if (ordersModalEl) {
+                const ordersModal = new bootstrap.Modal(ordersModalEl);
+                ordersModal.show();
+            }
+        });
+    }
 
-        const ordersModalEl = document.getElementById('ordersModal');
-        if (ordersModalEl) {
-            const ordersModal = new bootstrap.Modal(ordersModalEl);
-            ordersModal.show();
+    // Handle order details clicks
+    document.addEventListener('click', function(e) {
+        if (e.target.classList.contains('view-order-details') ||
+            (e.target.closest && e.target.closest('.view-order-details'))) {
+            const row = e.target.closest('.order-row');
+            const invoice = row.dataset.invoice;
+            viewOrderDetails(invoice);
         }
     });
 
-    if (searchBtn) {
-        searchBtn.addEventListener('click', function() {
-            const searchInput = document.getElementById('order-search');
-            if (searchInput) {
-                fetchOrders('all', searchInput.value);
-            }
+    // Properly handle modal closing
+    const ordersModal = document.getElementById('ordersModal');
+    if (ordersModal) {
+        ordersModal.addEventListener('hidden.bs.modal', function() {
+            // Reset to default tab when modal is closed
+            filterUserOrders('to-pay');
         });
     }
-
-    if (reorderBtn) {
-        reorderBtn.addEventListener('click', function() {
-            const invoice = this.dataset.invoice;
-            if (!invoice) return;
-
-            fetch(`order_details.php?invoice=${encodeURIComponent(invoice)}`)
-                .then(response => response.json())
-                .then(order => {
-                    if (!order || !order.items) return;
-                    // Clear current cart
-                    cart = [];
-
-                    // Add all items from order to cart
-                    order.items.forEach(item => {
-                        cart.push({
-                            title: item.title,
-                            price: item.price,
-                            productImg: '', // You might need to adjust this
-                            quantity: item.quantity
-                        });
-                    });
-
-                    // Update cart display
-                    renderCart();
-                    alert('Items from this order have been added to your cart!');
-
-                    // Close modal
-                    const detailsModalEl = document.getElementById('orderDetailsModal');
-                    if (detailsModalEl) {
-                        const detailsModal = bootstrap.Modal.getInstance(detailsModalEl);
-                        if (detailsModal) detailsModal.hide();
-                    }
-                });
-        });
-    }
-
-    // Tab switching
-    document.querySelectorAll('#ordersTab button').forEach(tab => {
-        tab.addEventListener('click', function() {
-            const status = this.id.replace('-tab', '');
-            if (status !== 'all') {
-                fetchOrders(status);
-            }
-        });
-    });
 }
+
+
 
 // Payment instructions
 function setupPaymentInstructions() {
@@ -702,12 +805,10 @@ function mapStatus(statusCode) {
     return statusMap[statusCode] || 'unknown';
 }
 
-    // Initialize when page loads
+// Initialize when page loads
 document.addEventListener('DOMContentLoaded', function() {
     // Initialize orders system
-    if (document.getElementById('ordersModal')) {
-        initOrders();
-    }
+    initOrders();
     
     // Initialize cart and other systems
     if (document.querySelector('.cart-content')) {
@@ -717,3 +818,14 @@ document.addEventListener('DOMContentLoaded', function() {
     // Initialize payment instructions
     setupPaymentInstructions();
 });
+
+// Helper function to close all Bootstrap modals
+function closeAllModals() {
+    const modals = document.querySelectorAll('.modal');
+    modals.forEach(modal => {
+        const modalInstance = bootstrap.Modal.getInstance(modal);
+        if (modalInstance) {
+            modalInstance.hide();
+        }
+    });
+}

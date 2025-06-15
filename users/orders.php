@@ -1,98 +1,167 @@
 <?php
-include("auth_session.php");
-include("db.php");
+// Start output buffering at the very top
+ob_start();
 
-header('Content-Type: application/json');
+ini_set('display_errors', 0); // Disable displaying errors to output
+ini_set('log_errors', 1); // Enable error logging
+error_reporting(E_ALL);
 
-$user = $_SESSION['username'];
-$statusFilter = isset($_GET['status']) ? $_GET['status'] : 'all';
-$searchTerm = isset($_GET['search']) ? $_GET['search'] : '';
-
-// Get user ID
-$sql = "SELECT user_id FROM users WHERE username = ?";
-$stmt = $con->prepare($sql);
-$stmt->bind_param("s", $user);
-$stmt->execute();
-$result = $stmt->get_result();
-$row = $result->fetch_assoc();
-$user_id = $row['user_id'];
-
-// Map status numbers to text
-$statusMap = [
-    0 => 'pending',
-    1 => 'delivered'
-];
-
-// Build query
-$query = "SELECT * FROM orders WHERE user_id = ?";
-$params = [$user_id];
-$types = "i";
-
-if ($statusFilter !== 'all') {
-    // Convert status text back to number
-    $statusNumber = array_search($statusFilter, $statusMap);
-    $query .= " AND order_status = ?";
-    $params[] = $statusNumber;
-    $types .= "i";
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
 }
 
-if (!empty($searchTerm)) {
-    $query .= " AND invoice_number LIKE ?";
-    $params[] = "%$searchTerm%";
-    $types .= "s";
+// Determine if this is an AJAX request
+$isAjax = isset($_GET['ajax']) || isset($_GET['status']);
+
+if ($isAjax) {
+    header('Content-Type: application/json');
+} else {
+    header('Content-Type: text/html');
 }
 
-$query .= " ORDER BY date DESC";
+try {
+    if (!isset($_SESSION['username'])) {
+        throw new Exception('User not authenticated');
+    }
 
-$stmt = $con->prepare($query);
-$stmt->bind_param($types, ...$params);
-$stmt->execute();
-$orderItems = $stmt->get_result();
+    include("auth_session.php");
+    include("db.php");
 
-// Group items by invoice number
-$orders = [];
-while($item = $orderItems->fetch_assoc()) {
-    $invoice = $item['invoice_number'];
+    $user = $_SESSION['username'];
+    $statusFilter = isset($_GET['status']) ? $_GET['status'] : 'all';
 
-    // Convert status number to text
-    $statusText = isset($statusMap[$item['order_status']]) ? $statusMap[$item['order_status']] : 'unknown';
-
-    if (!isset($orders[$invoice])) {
-        $orders[$invoice] = [
-            'invoice' => $invoice,
-            'date' => $item['date'],
-            'status' => $statusText,
-            'type' => $item['order_type'],
-            'payment_method' => $item['pay_method'],
-            'payment_status' => $item['pay_status'],
-            'total' => 0,
-            'items' => [],
-            'delivery_address' => [
-                'street' => $item['street'] ?? '',
-                'barangay' => $item['barangay'] ?? '',
-                'city' => $item['city'] ?? '',
-                'phone' => $item['phone'] ?? ''
-            ]
-        ];
+    // Get user ID
+    $sql = "SELECT user_id FROM users WHERE username = ?";
+    $stmt = $con->prepare($sql);
+    
+    if (!$stmt) {
+        throw new Exception("Prepare failed: " . $con->error);
     }
     
-    // Add item to order
-    $orders[$invoice]['items'][] = [
-        'title' => $item['title'],
-        'price' => $item['price'],
-        'quantity' => $item['quantity'],
-        'subtotal' => $item['subtotal_amount']
+    $stmt->bind_param("s", $user);
+
+    if (!$stmt->execute()) {
+        throw new Exception("Failed to execute user query: " . $stmt->error);
+    }
+
+    $result = $stmt->get_result();
+    $row = $result->fetch_assoc();
+
+    if (!$row) {
+        throw new Exception("User not found in database");
+    }
+
+    $user_id = $row['user_id'];
+
+    // Map status to user-friendly categories
+    $statusMap = [
+        'to-pay' => ['pay_status' => 0, 'order_status' => 0],
+        'to-ship' => ['pay_status' => 1, 'order_status' => 0],
+        'to-receive' => ['pay_status' => 1, 'order_status' => 1],
+        'delivered' => ['order_status' => 2] // Added delivered status
     ];
+
+    // Build query
+    $query = "SELECT * FROM orders WHERE user_id = ?";
+    $params = [$user_id];
+    $types = "i";
+
+    if ($statusFilter !== 'all' && isset($statusMap[$statusFilter])) {
+        $filter = $statusMap[$statusFilter];
+
+        if (isset($filter['pay_status'])) {
+            $query .= " AND pay_status = ?";
+            $params[] = $filter['pay_status'];
+            $types .= "i";
+        }
+
+        if (isset($filter['order_status'])) {
+            $query .= " AND order_status = ?";
+            $params[] = $filter['order_status'];
+            $types .= "i";
+        }
+    }
+
+    $query .= " ORDER BY date DESC";
+
+    $stmt = $con->prepare($query);
     
-    // Add to total
-    $orders[$invoice]['total'] += $item['subtotal_amount'];
+    if (!$stmt) {
+        throw new Exception("Prepare failed: " . $con->error);
+    }
+
+    // Bind parameters dynamically
+    if (count($params) > 0) {
+        $stmt->bind_param($types, ...$params);
+    }
+
+    if (!$stmt->execute()) {
+        throw new Exception("Failed to execute orders query: " . $stmt->error);
+    }
+
+    $orderItems = $stmt->get_result();
+
+    // Group items by invoice number
+    $orders = [];
+    while($item = $orderItems->fetch_assoc()) {
+        $invoice = $item['invoice_number'];
+
+        if (!isset($orders[$invoice])) {
+            $orders[$invoice] = [
+                'invoice' => $invoice,
+                'date' => $item['date'],
+                'status' => $item['order_status'],
+                'pay_status' => $item['pay_status'],
+                'type' => $item['order_type'],
+                'payment_method' => $item['pay_method'],
+                'total' => 0,
+                'items' => [],
+                'delivery_address' => [
+                    'street' => $item['street'] ?? '',
+                    'barangay' => $item['barangay'] ?? '',
+                    'city' => $item['city'] ?? '',
+                    'phone' => $item['phone'] ?? ''
+                ]
+            ];
+        }
+
+        // Add item to order
+        $orders[$invoice]['items'][] = [
+            'title' => $item['title'],
+            'price' => $item['price'],
+            'quantity' => $item['quantity'],
+            'subtotal' => $item['subtotal_amount']
+        ];
+
+        // Add to total
+        $orders[$invoice]['total'] += $item['subtotal_amount'];
+    }
+
+    // Convert associative array to indexed array
+    $result = array_values($orders);
+
+    // For AJAX requests, output JSON and exit
+    if ($isAjax) {
+        // Clear any previous output
+        ob_end_clean();
+        echo json_encode($result);
+        exit;
+    }
+
+} catch (Exception $e) {
+    // Clear any previous output
+    ob_end_clean();
+    
+    if ($isAjax) {
+        echo json_encode(['error' => $e->getMessage()]);
+        exit;
+    }
+    
+    $error = $e->getMessage();
 }
 
-// Convert associative array to indexed array
-$result = array_values($orders);
-
-echo json_encode($result);
-exit;
+// For HTML output, flush the buffer
+ob_end_flush();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -105,6 +174,9 @@ exit;
 <body>
     <div class="container mt-5">
         <h2 class="mb-4">My Orders</h2>
+        <?php if (isset($error)): ?>
+            <div class="alert alert-danger"><?= htmlspecialchars($error) ?></div>
+        <?php endif; ?>
         <div class="table-responsive">
             <table class="table table-bordered table-striped">
                 <thead>
@@ -122,7 +194,7 @@ exit;
                     </tr>
                 </thead>
                 <tbody>
-                    <?php if ($orders->num_rows === 0): ?>
+                    <?php if (empty($result)): ?>
                         <tr>
                             <td colspan="10" class="text-center">No orders found.</td>
                         </tr>
@@ -154,7 +226,7 @@ exit;
                             <td><?= htmlspecialchars($order['type']) ?></td>
                             <td><?= htmlspecialchars($order['payment_method']) ?></td>
                             <td><?= htmlspecialchars($order['status']) ?></td>
-                            <td><?= htmlspecialchars($order['payment_status']) ?></td>
+                            <td><?= htmlspecialchars($order['pay_status']) ?></td>
                         </tr>
                         <?php endforeach; ?>
                     <?php endif; ?>

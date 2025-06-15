@@ -1086,3 +1086,22 @@ section {
 .progress-bar {
     background-color: #8B5C2A; /* Your brown color */
 }
+
+/* Order status badges */
+.badge.bg-danger { background-color: #dc3545 !important; color: white !important; }
+.badge.bg-warning { background-color: #ffc107 !important; color: black !important; }
+.badge.bg-info { background-color: #0dcaf0 !important; color: white !important; }
+.badge.bg-success { background-color: #198754 !important; color: white !important; }
+
+/* Tab styling */
+.order-tab {
+    cursor: pointer;
+    padding: 10px 15px;
+    border: none;
+    background: none;
+}
+.order-tab.active {
+    background-color: #8B5C2A;
+    color: white;
+    border-radius: 4px;
+}

@@ -71,16 +71,22 @@ function showAdmins(){
     });
 }
 
-function ChangeOrderStatus(orders_id){
+function ChangeOrderStatus(orders_id, new_status){
     $.ajax({
-       url:"./controller/updateOrderStatus.php",
-       method:"post",
-       data:{record: orders_id},
-       success:function(data){
-           alert('Order Status updated successfully');
-           showOrders();
-       }
-   });
+        url: "./controller/updateOrderStatus.php",
+        method: "post",
+        data: {
+            record: orders_id,
+            new_status: new_status  // Add this parameter
+        },
+        success: function(data){
+            alert(data);
+            showOrders();
+        },
+        error: function(xhr, status, error) {
+            alert("Error: " + error);
+        }
+    });
 }
 
 function ChangePay(orders_id){

@@ -614,120 +614,115 @@
   </div>
 </div>
 
-        <!-- Orders Modal -->
-        <div class="modal fade" id="ordersModal" tabindex="-1" aria-labelledby="ordersModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-xl">
+<!-- Orders Modal -->
+<div class="modal fade" id="ordersModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header bg-primary text-white">
-                <h5 class="modal-title" id="ordersModalLabel">My Order History</h5>
+                <h5 class="modal-title">My Orders</h5>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <!-- Order Status Tabs -->
-                <ul class="nav nav-tabs mb-3" id="ordersTab" role="tablist">
-                    <li class="nav-item" role="presentation">
-                        <button class="nav-link active" id="all-tab" data-bs-toggle="tab" data-bs-target="#all" type="button" role="tab">All Orders</button>
+                <ul class="nav nav-tabs mb-3" id="orderTabs">
+                    <li class="nav-item">
+                        <button class="nav-link active order-tab" id="to-pay-tab" 
+                                onclick="filterUserOrders('to-pay')">To Pay</button>
                     </li>
-                    <li class="nav-item" role="presentation">
-                        <button class="nav-link" id="pending-tab" data-bs-toggle="tab" data-bs-target="#pending" type="button" role="tab">To Prepare</button>
+                    <li class="nav-item">
+                        <button class="nav-link order-tab" id="to-ship-tab" 
+                                onclick="filterUserOrders('to-ship')">To Ship</button>
                     </li>
-                    <li class="nav-item" role="presentation">
-                        <button class="nav-link" id="delivered-tab" data-bs-toggle="tab" data-bs-target="#delivered" type="button" role="tab">Completed</button>
+                    <li class="nav-item">
+                        <button class="nav-link order-tab" id="to-receive-tab" 
+                                onclick="filterUserOrders('to-receive')">To Receive</button>
                     </li>
-                    <li class="nav-item" role="presentation">
-                        <button class="nav-link" id="cancelled-tab" data-bs-toggle="tab" data-bs-target="#cancelled" type="button" role="tab">Cancelled</button>
+                    <li class="nav-item">
+                        <button class="nav-link order-tab" id="delivered-tab" 
+                                onclick="filterUserOrders('delivered')">Delivered</button>
                     </li>
                 </ul>
                 
-                <!-- Search Box -->
-                <div class="input-group mb-3">
-                    <input type="text" id="order-search" class="form-control" placeholder="Search by order number...">
-                    <button class="btn btn-outline-primary" type="button" id="search-orders-btn">
-                        <i class="fas fa-search"></i>
-                    </button>
+                <!-- To Pay Orders -->
+                <div id="to-pay-orders" class="order-section">
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Order #</th>
+                                    <th>Date</th>
+                                    <th>Items</th>
+                                    <th>Total</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="to-pay-orders-body">
+                                <!-- To pay orders will load here -->
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
                 
-                <!-- Tab Content -->
-                <div class="tab-content" id="ordersTabContent">
-                    <div class="tab-pane fade show active" id="all" role="tabpanel">
-                        <div class="table-responsive">
-                            <table class="table table-hover">
-                                <thead class="table-light">
-                                    <tr>
-                                        <th>Order #</th>
-                                        <th>Date</th>
-                                        <th>Items</th>
-                                        <th>Total</th>
-                                        <th>Status</th>
-                                        <th>Type</th>
-                                        <th>Actions</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="all-orders-body">
-                                    <!-- All orders will load here -->
-                                </tbody>
-                            </table>
-                        </div>
+                <!-- To Ship Orders -->
+                <div id="to-ship-orders" class="order-section" style="display:none;">
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Order #</th>
+                                    <th>Date</th>
+                                    <th>Items</th>
+                                    <th>Total</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="to-ship-orders-body">
+                                <!-- To ship orders will load here -->
+                            </tbody>
+                        </table>
                     </div>
-                    
-                    <div class="tab-pane fade" id="pending" role="tabpanel">
-                        <div class="table-responsive">
-                            <table class="table table-hover">
-                                <thead class="table-light">
-                                    <tr>
-                                        <th>Order #</th>
-                                        <th>Date</th>
-                                        <th>Items</th>
-                                        <th>Total</th>
-                                        <th>Type</th>
-                                        <th>Actions</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="pending-orders-body">
-                                    <!-- Pending orders will load here -->
-                                </tbody>
-                            </table>
-                        </div>
+                </div>
+                
+                <!-- To Receive Orders -->
+                <div id="to-receive-orders" class="order-section" style="display:none;">
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Order #</th>
+                                    <th>Date</th>
+                                    <th>Items</th>
+                                    <th>Total</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="to-receive-orders-body">
+                                <!-- To receive orders will load here -->
+                            </tbody>
+                        </table>
                     </div>
-                    
-                    <div class="tab-pane fade" id="delivered" role="tabpanel">
-                        <div class="table-responsive">
-                            <table class="table table-hover">
-                                <thead class="table-light">
-                                    <tr>
-                                        <th>Order #</th>
-                                        <th>Date</th>
-                                        <th>Items</th>
-                                        <th>Total</th>
-                                        <th>Type</th>
-                                        <th>Actions</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="delivered-orders-body">
-                                    <!-- Delivered orders will load here -->
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                    
-                    <div class="tab-pane fade" id="cancelled" role="tabpanel">
-                        <div class="table-responsive">
-                            <table class="table table-hover">
-                                <thead class="table-light">
-                                    <tr>
-                                        <th>Order #</th>
-                                        <th>Date</th>
-                                        <th>Items</th>
-                                        <th>Total</th>
-                                        <th>Type</th>
-                                        <th>Actions</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="cancelled-orders-body">
-                                    <!-- Cancelled orders will load here -->
-                                </tbody>
-                            </table>
-                        </div>
+                </div>
+                
+                <!-- Delivered Orders -->
+                <div id="delivered-orders" class="order-section" style="display:none;">
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Order #</th>
+                                    <th>Date</th>
+                                    <th>Items</th>
+                                    <th>Total</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="delivered-orders-body">
+                                <!-- Delivered orders will load here -->
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>

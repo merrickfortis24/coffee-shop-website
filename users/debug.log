@@ -491,3 +491,67 @@ Array
     [order_type] => pickup
     [delivery_address] => 
 )
+Array
+(
+    [items] => Array
+        (
+            [0] => Array
+                (
+                    [title] => ytm
+                    [price] => 67
+                    [quantity] => 2
+                    [subtotal_amount] => 134
+                )
+
+        )
+
+    [invoice_number] => INV1749985129728
+    [pay_method] => Cash on Delivery
+    [order_type] => delivery
+    [delivery_address] => Array
+        (
+            [street] => lipa
+            [barangay] => romblon
+            [city] => city
+            [phone] => 12345
+        )
+
+)
+Array
+(
+    [items] => Array
+        (
+            [0] => Array
+                (
+                    [title] => ytm
+                    [price] => 67
+                    [quantity] => 1
+                    [subtotal_amount] => 67
+                )
+
+        )
+
+    [invoice_number] => INV1749991149332
+    [pay_method] => GCash
+    [order_type] => pickup
+    [delivery_address] => 
+)
+Array
+(
+    [items] => Array
+        (
+            [0] => Array
+                (
+                    [title] => ytm
+                    [price] => 67
+                    [quantity] => 1
+                    [subtotal_amount] => 67
+                )
+
+        )
+
+    [invoice_number] => INV1749993467963
+    [pay_method] => GCash
+    [order_type] => pickup
+    [delivery_address] => 
+)

@@ -1,14 +1,37 @@
 <?php
+include_once "../config/dbconnect.php";
 
-    include_once "../config/dbconnect.php";
-   
-    $order_id=$_POST['record'];
-    // Toggle order_status (0->1, 1->0)
-    $sql = "UPDATE orders SET order_status = IF(order_status=0,1,0) WHERE orders_id='$order_id'";
-    if(mysqli_query($conn, $sql)){
-        echo "Order status updated!";
+$order_id = (int)$_POST['record'];
+$new_status = isset($_POST['new_status']) ? (int)$_POST['new_status'] : null;
+
+// Validate status transition
+if ($new_status !== null) {
+    $allowed_transitions = [
+        0 => [1],  // Pending -> Processing
+        1 => [2],  // Processing -> Delivered
+        2 => []    // Delivered (no further changes)
+    ];
+
+    // Get current status
+    $current_status_result = $conn->query("SELECT order_status FROM orders WHERE orders_id=$order_id");
+    if ($current_status_result && $current_status_result->num_rows > 0) {
+        $current_status = (int)$current_status_result->fetch_assoc()['order_status'];
+
+        // Check if transition is allowed
+        if (in_array($new_status, $allowed_transitions[$current_status])) {
+            $sql = "UPDATE orders SET order_status = $new_status WHERE orders_id=$order_id";
+            if ($conn->query($sql)) {
+                echo "Order status updated!";
+            } else {
+                echo "Update failed: " . $conn->error;
+            }
+        } else {
+            echo "Invalid status transition";
+        }
     } else {
-        echo "Failed to update order status.";
+        echo "Order not found";
     }
-    
+} else {
+    echo "Missing status parameter";
+}
 ?>

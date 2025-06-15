@@ -21,12 +21,6 @@ $user_result = $user_stmt->get_result();
 $user_row = $user_result->fetch_assoc();
 $user_id = $user_row['user_id'];
 
-// Map status numbers to text
-$statusMap = [
-    0 => 'pending',
-    1 => 'delivered'
-];
-
 // Get all items for this invoice
 $order_sql = "SELECT * FROM orders WHERE invoice_number = ? AND user_id = ?";
 $order_stmt = $con->prepare($order_sql);
@@ -46,16 +40,13 @@ $total = 0;
 
 while($item = $order_result->fetch_assoc()) {
     if ($order === null) {
-        // Convert status number to text
-        $statusText = isset($statusMap[$item['order_status']]) ? $statusMap[$item['order_status']] : 'unknown';
-
         $order = [
             'invoice' => $item['invoice_number'],
             'date' => $item['date'],
-            'status' => $statusText,
+            'status' => $item['order_status'],
+            'pay_status' => $item['pay_status'],
             'type' => $item['order_type'],
             'payment_method' => $item['pay_method'],
-            'payment_status' => $item['pay_status'],
             'delivery_address' => [
                 'street' => $item['street'] ?? '',
                 'barangay' => $item['barangay'] ?? '',
@@ -64,14 +55,14 @@ while($item = $order_result->fetch_assoc()) {
             ]
         ];
     }
-
+    
     $items[] = [
         'title' => $item['title'],
         'price' => $item['price'],
         'quantity' => $item['quantity'],
         'subtotal' => $item['subtotal_amount']
     ];
-
+    
     $total += $item['subtotal_amount'];
 }
 
