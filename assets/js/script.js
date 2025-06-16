@@ -1,24 +1,21 @@
 // Show Navbar when small screen || Close Cart Items & Search Textbox
 let navbar = document.querySelector('.navbar');
+let cartItem = document.querySelector('.cart:not(.profile-sidebar)');
+let profileBtn = document.querySelector('#profile-btn');
+let profileSidebar = document.querySelector('#profile-sidebar');
+let sidebarOverlay = document.querySelector('#sidebar-overlay');
+let closeProfileBtn = document.querySelector('#close-profile-sidebar');
+let searchForm = document.querySelector('.search-form');
 
 document.querySelector('#menu-btn').onclick = () => {
     navbar.classList.toggle('active');
     cartItem.classList.remove('active');
     searchForm.classList.remove('active');
 }
-
-// Cart sidebar toggle (existing)
-let cartItem = document.querySelector('.cart:not(.profile-sidebar)');
 document.querySelector('#cart-btn').onclick = () => {
     cartItem.classList.toggle('active');
     profileSidebar.classList.remove('active'); // hide profile sidebar
 };
-// Profile Sidebar Toggle
-let profileBtn = document.querySelector('#profile-btn');
-let profileSidebar = document.querySelector('#profile-sidebar');
-let sidebarOverlay = document.querySelector('#sidebar-overlay');
-let closeProfileBtn = document.querySelector('#close-profile-sidebar');
-
 profileBtn.onclick = () => {
     profileSidebar.classList.add('active');
     sidebarOverlay.style.display = 'block';
@@ -54,8 +51,6 @@ document.getElementById('close-profile-sidebar').onclick = function() {
 };
 
 // Show Search Textbox || Close Navbar & Cart Items
-let searchForm = document.querySelector('.search-form');
-
 document.querySelector('#search-btn').onclick = () => {
     searchForm.classList.toggle('active');
     navbar.classList.remove('active');
@@ -543,18 +538,26 @@ function viewOrderDetails(invoice) {
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    ${order.status === 2 ? '<button type="button" class="btn btn-success" onclick="markAsDelivered(\'' + order.invoice + '\')">Mark as Delivered</button>' : ''}
-                    ${order.status === 0 ? '<button type="button" class="btn btn-danger" id="cancel-order-btn">Cancel Order</button>' : ''}
-                    <button type="button" class="btn btn-primary" id="reorder-btn">Reorder</button>
                 </div>
             `;
             
             detailsBody.innerHTML = detailsHtml;
 
-            // Show modal
+            // --- NEW LOGIC: Close Orders modal, then open Details modal ---
             const detailsModalEl = document.getElementById('orderDetailsModal');
             if (detailsModalEl) {
-                const detailsModal = new bootstrap.Modal(detailsModalEl);
+                const detailsModal = bootstrap.Modal.getOrCreateInstance(detailsModalEl);
+
+                // Close the Orders modal first
+                const ordersModalEl = document.getElementById('ordersModal');
+                if (ordersModalEl) {
+                    const ordersModal = bootstrap.Modal.getInstance(ordersModalEl);
+                    if (ordersModal) {
+                        ordersModal.hide();
+                    }
+                }
+
+                // Then show the Details modal
                 detailsModal.show();
             }
         })
@@ -879,5 +882,20 @@ document.addEventListener('click', function(e) {
         (e.target.classList.contains('btn-secondary') && e.target.closest('.modal-footer'))
     ) {
         closeAllModals();
+    }
+});
+
+// --- Add this event listener for when the Order Details modal is closed ---
+document.addEventListener('DOMContentLoaded', function() {
+    const detailsModalEl = document.getElementById('orderDetailsModal');
+    if (detailsModalEl) {
+        detailsModalEl.addEventListener('hidden.bs.modal', function() {
+            // When details modal is closed, reopen the orders modal
+            const ordersModalEl = document.getElementById('ordersModal');
+            if (ordersModalEl) {
+                const ordersModal = bootstrap.Modal.getOrCreateInstance(ordersModalEl);
+                ordersModal.show();
+            }
+        });
     }
 });

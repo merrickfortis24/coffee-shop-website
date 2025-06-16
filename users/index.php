@@ -732,8 +732,6 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-danger" id="cancel-order-btn">Cancel Order</button>
-                <button type="button" class="btn btn-primary" id="reorder-btn">Reorder</button>
             </div>
         </div>
     </div>

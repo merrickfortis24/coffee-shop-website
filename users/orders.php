@@ -191,12 +191,13 @@ ob_end_flush();
                         <th>Payment Method</th>
                         <th>Status</th>
                         <th>Payment Status</th>
+                        <th>Details</th>
                     </tr>
                 </thead>
                 <tbody>
                     <?php if (empty($result)): ?>
                         <tr>
-                            <td colspan="10" class="text-center">No orders found.</td>
+                            <td colspan="11" class="text-center">No orders found.</td>
                         </tr>
                     <?php else: ?>
                         <?php foreach($result as $order): ?>
@@ -227,6 +228,11 @@ ob_end_flush();
                             <td><?= htmlspecialchars($order['payment_method']) ?></td>
                             <td><?= htmlspecialchars($order['status']) ?></td>
                             <td><?= htmlspecialchars($order['pay_status']) ?></td>
+                            <td>
+                                <button class="btn btn-details">
+                                    <i class="fas fa-eye"></i> Details
+                                </button>
+                            </td>
                         </tr>
                         <?php endforeach; ?>
                     <?php endif; ?>
