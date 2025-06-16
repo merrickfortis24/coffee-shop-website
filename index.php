@@ -366,7 +366,13 @@
         <section class="contact" id="contact">
             <h1 class="heading"><span>Contact</span> Us</h1>
             <div class="row">
-                <div id="map" class="map pull-left"></div>
+                <div class="map mb-4" style="flex:1 1 400px; min-width:300px;">
+                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d895.0134625922213!2d121.1027439!3d13.928273899999997!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x33bd12ca05b90455%3A0xd6a461fe2e37244!2s36%20N433%2C%20Lipa%20City%2C%20Batangas!5e1!3m2!1sen!2sph!4v1750032543229!5m2!1sen!2sph"
+                            width="100%" height="350" style="border:0;" allowfullscreen="" loading="lazy"
+                            referrerpolicy="no-referrer-when-downgrade"></iframe>
+                </div>
+
+                <!-- Your contact form stays here -->
                 <form name="contact" method="POST" action="https://formspree.io/f/xnnvvzvw">
                     <h3> Get in touch with us!</h3>
                     <div class="inputBox">

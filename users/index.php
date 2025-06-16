@@ -159,11 +159,6 @@
                                 Edit Profile
                             </a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link d-flex align-items-center text-danger" href="logout.php">
-                                <i class="bi bi-box-arrow-right me-2"></i>
-                                Logout
-                            </a>
                         </li>
                     </ul>
                 </div>
